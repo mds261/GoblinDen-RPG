@@ -4,6 +4,25 @@ An expanded Godot 4 top-down dark-fantasy RPG built from the **Goblin Perspectiv
 
 Uses pure GDScript and bundled hand-painted dark-fantasy assets (`assets/`). No external plugins, API keys, or internet connection required.
 
+## New: layered continuous Thornwood exterior
+
+After defeating the Wolf Rider in Thornwood Hollow, the next exit opens a large, uninterrupted painted 2D exploration zone. The exterior keeps the established attacks, specials, projectiles, companions, drops, and enemy behaviors while adding a following camera, physical route boundaries, foreground occlusion, Y-sorted depth, landmarks, interactions, and spaced woodland patrols.
+
+## Thornwood Expanse - Continuous Exterior Progression
+
+Defeating the **Thornwood Wolf Rider** now opens the trail beyond Thornwood Hollow into the **Thornwood Expanse**. Unlike the earlier 1152x720 cave rooms, this is a **2304x1440 continuous exterior zone**: the player remains at normal gameplay scale while the `Camera2D` follows movement across the landscape. Selected portions of the original painting are re-projected as depth-sorted foreground layers, so characters pass behind trees, the shrine, the hunter camp, and foreground cliffs instead of floating above the entire image.
+
+- No room-to-room gates inside the exterior; the player walks freely through one broad woodland region.
+- Branching visual routes connect a fallen-root arch, an old watch shrine, an abandoned hunter camp, a stream ford, and a high overlook.
+- The cave entrance remains a visible return point to Thornwood Hollow.
+- Exploration discovers and permanently records five landmarks.
+- Exterior camera and collision bounds are activated on entry, then restored to room-sized limits when returning underground.
+- The exterior background is `assets/thornwood_expanse.png`; its world-sized rendering is controlled by `scripts/cave.gd`.
+- The player camera is explicitly enabled and forced to update when the zone changes, so it scrolls beyond the opening viewport.
+- Collision polygons follow the old-growth trees, shrine, hunter camp, stream, waterfall, forest walls, and cliff edges. The stream ford, wooden bridge, and route loops remain traversable.
+- Five one-time world interactions make the environment useful: forage root-herbs, invoke the shrine, search the hunter camp, recover river scrap, and study the overlook trail totem.
+- Three spaced exterior patrols use the original 2D combat system, including attacks, specials, projectiles, status effects, companion support, scrap, and XP.
+
 ## Expanded Features (Based on Concept Document)
 
 1. **Four Core Goblin Classes & Nine Class Evolutions (Section 1)**

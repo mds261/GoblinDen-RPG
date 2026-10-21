@@ -20,7 +20,8 @@ const ROOM_NAMES = [
 	"THE BREACH",
 	"ROOTVEIN GROTTO",
 	"THE CAVE MOUTH",
-	"THORNWOOD HOLLOW"
+	"THORNWOOD HOLLOW",
+	"THORNWOOD EXPANSE"
 ]
 const CLASS_ORDER: Array[String] = ["blade", "archer", "knight", "mage"]
 const FORGE := Vector2(350, 350)
@@ -33,6 +34,24 @@ const TREASURE_ROOM := Vector2(220, 520)
 const WAR_ROOM := Vector2(895, 520)
 const LEFT_GATE := Vector2(140, 365)
 const RIGHT_GATE := Vector2(1010, 365)
+const EXPANSE_RETURN_GATE := Vector2(310, 245)
+const EXPANSE_SPAWN := Vector2(365, 285)
+const EXPANSE_WORLD_SIZE := Vector2(2304, 1440)
+const EXPANSE_ROOM_INDEX := 6
+const EXPANSE_LANDMARKS := [
+	{"id": "fallen_arch", "name": "Fallen-Root Arch", "pos": Vector2(410, 925)},
+	{"id": "watch_shrine", "name": "Old Watch Shrine", "pos": Vector2(845, 720)},
+	{"id": "hunter_camp", "name": "Abandoned Hunter Camp", "pos": Vector2(1535, 510)},
+	{"id": "stream_ford", "name": "Whispering Stream Ford", "pos": Vector2(1715, 850)},
+	{"id": "high_overlook", "name": "Thornwood High Overlook", "pos": Vector2(2035, 510)}
+]
+const EXPANSE_INTERACTIONS := [
+	{"id": "root_herbs", "name": "E  FORAGE HERBS", "pos": Vector2(430, 970), "kind": "herbs"},
+	{"id": "shrine_blessing", "name": "E  USE SHRINE", "pos": Vector2(845, 735), "kind": "shrine"},
+	{"id": "camp_cache", "name": "E  SEARCH CAMP", "pos": Vector2(1535, 520), "kind": "cache"},
+	{"id": "ford_cache", "name": "E  SEARCH FORD", "pos": Vector2(1715, 855), "kind": "ford"},
+	{"id": "overlook_totem", "name": "E  TRAIL TOTEM", "pos": Vector2(2035, 520), "kind": "totem"}
+]
 
 @onready var player = $BladeGoblin
 
@@ -52,6 +71,9 @@ var equipped_loot_index: int = -1
 var recruited_ids: Array[String] = []
 var party_nodes: Array[Node2D] = []
 var summon_nodes: Array[Node2D] = []
+var discovered_expanse_landmarks: Array[String] = []
+var used_expanse_interactions: Array[String] = []
+var thornwood_unlocked: bool = false
 
 var health_label: Label
 var health_bar: ProgressBar
@@ -89,17 +111,20 @@ func _ready() -> void:
 		add_child(room)
 		rooms.append(room)
 	_spawn_den_facilities()
-	_spawn_large_enemies()
 	# Polish: restore a previous run BEFORE the world is populated, so the
 	# saved campaign tier is the one that actually gets spawned.
 	var restored_save := false
 	if SaveData.has_save():
 		restored_save = SaveData.load_data(self)
 	if restored_save:
+		_spawn_large_enemies()
 		_populate_campaign_enemies(campaign_index)
+		_spawn_exterior_encounters()
 		_restore_recruited_party()
 	else:
+		_spawn_large_enemies()
 		_populate_campaign_enemies(0)
+		_spawn_exterior_encounters()
 	enter_room(0, Vector2(460, 375))
 	update_health(player.hp, player.max_hp)
 	if restored_save:
@@ -158,6 +183,8 @@ func _spawn_large_enemies() -> void:
 		{"room": 5, "kind": "wolf_rider", "pos": Vector2(760, 350), "radius": 36.0}
 	]
 	for encounter in encounters:
+		if encounter["room"] == 5 and thornwood_unlocked:
+			continue
 		var enemy = LargeEnemy.new()
 		enemy.configure(encounter["kind"])
 		enemy.position = encounter["pos"]
@@ -171,6 +198,14 @@ func _spawn_large_enemies() -> void:
 		var room_index: int = encounter["room"]
 		rooms[room_index].add_child(enemy)
 		enemy.defeated.connect(on_enemy_defeated.bind(enemy, room_index))
+
+func _spawn_exterior_encounters() -> void:
+	# The exterior keeps the existing 2D combat model. These patrols are spaced
+	# across the continuous map so exploration, attacks, projectiles, specials,
+	# companions, drops, and knockback all work without a separate combat port.
+	spawn_enemy_ext(6, Vector2(1080, 790), "THORNWOOD SCOUT", 92, 118.0, 12, 5, "rogue", 48, "")
+	spawn_enemy_ext(6, Vector2(1460, 690), "POACHER ARCHER", 78, 108.0, 11, 6, "archer", 52, "")
+	spawn_enemy_ext(6, Vector2(1940, 470), "OVERLOOK SENTINEL", 125, 92.0, 16, 8, "knight", 70, "")
 
 func configure_input() -> void:
 	var bindings := {
@@ -262,15 +297,44 @@ func enter_room(index: int, spawn_point: Vector2) -> void:
 		if is_instance_valid(sum_node):
 			sum_node.position = spawn_point + Vector2(36, -28 + idx * 28)
 			sum_node.velocity = Vector2.ZERO
-	$Cave.room_index = index
+	if $Cave.has_method("configure_room"):
+		$Cave.configure_room(index)
+	else:
+		$Cave.room_index = index
 	if $Cave.has_method("update_chokepoints"):
 		var camp: Dictionary = GoblinData.CAMPAIGNS[campaign_index]
 		$Cave.update_chokepoints((bool(camp["chokepoints"]) or index == 2) and index > 0)
 	$Cave.queue_redraw()
+	_configure_camera_for_room(index)
 	var camp_tag := "  •  TIER %d" % (campaign_index + 1) if index > 0 and index <= 2 else ""
 	room_label.text = ROOM_NAMES[index] + camp_tag
 	refresh_objective()
 	queue_redraw()
+
+func _configure_camera_for_room(index: int) -> void:
+	var camera: Camera2D = player.get_node_or_null("Camera2D")
+	if not is_instance_valid(camera):
+		return
+	camera.enabled = true
+	camera.position = Vector2.ZERO
+	if index == EXPANSE_ROOM_INDEX:
+		camera.limit_left = 0
+		camera.limit_top = 0
+		camera.limit_right = int(EXPANSE_WORLD_SIZE.x)
+		camera.limit_bottom = int(EXPANSE_WORLD_SIZE.y)
+	else:
+		camera.limit_left = 0
+		camera.limit_top = 0
+		camera.limit_right = 1152
+		camera.limit_bottom = 720
+	camera.reset_smoothing()
+	camera.force_update_scroll()
+
+func _left_gate_position() -> Vector2:
+	return EXPANSE_RETURN_GATE if current_room == EXPANSE_ROOM_INDEX else LEFT_GATE
+
+func _right_gate_position() -> Vector2:
+	return RIGHT_GATE
 
 func living_enemies() -> int:
 	var count := 0
@@ -309,8 +373,10 @@ func on_enemy_defeated(enemy: Node2D, room_index: int) -> void:
 		show_notice("The Cave-Mouth Ogre crashes down. Daylight lies ahead.")
 		_shake_camera(11.0, 0.38)
 	elif room_index == 5 and _remaining_enemies_in_room(5, enemy) == 0:
-		show_notice("The Thornwood Wolf Rider is defeated. The hollow belongs to the tribe.")
+		thornwood_unlocked = true
+		show_notice("The Thornwood Wolf Rider is defeated. The trail into the open expanse is clear.")
 		_shake_camera(10.0, 0.34)
+		_auto_save()
 	refresh_objective()
 
 func _remaining_enemies_in_room(room_idx: int, defeated_enemy: Node2D) -> int:
@@ -615,6 +681,8 @@ func use_potion() -> void:
 func interact() -> void:
 	if player.hp <= 0:
 		return
+	if current_room == EXPANSE_ROOM_INDEX and _try_expanse_interaction():
+		return
 	if current_room == 0:
 		if player.position.distance_to(FORGE) < 85:
 			Tutorial.show_if_new(self, "near_forge")
@@ -658,18 +726,20 @@ func interact() -> void:
 			Tutorial.show_if_new(self, "near_war_room")
 			advance_war_room_campaign()
 			return
-	if current_room > 0 and player.position.distance_to(LEFT_GATE) < 75:
+	if current_room > 0 and player.position.distance_to(_left_gate_position()) < 75:
 		enter_room(current_room - 1, Vector2(935, 365))
 		if current_room == 0 and captain_defeated:
 			completed = true
 			show_notice("DEN SAVED! Visit the WAR ROOM to launch higher-tier raids or press R.")
 			_auto_save()
 		return
-	if current_room < ROOM_NAMES.size() - 1 and player.position.distance_to(RIGHT_GATE) < 75:
+	if current_room < ROOM_NAMES.size() - 1 and player.position.distance_to(_right_gate_position()) < 75:
 		if living_enemies() > 0:
-			show_notice("Defeat the humans here to open the way forward.")
+			show_notice("Defeat the guardian here to open the way forward." if current_room >= 3 else "Defeat the humans here to open the way forward.")
 		else:
-			enter_room(current_room + 1, Vector2(215, 365))
+			var next_room := current_room + 1
+			var next_spawn := EXPANSE_SPAWN if next_room == EXPANSE_ROOM_INDEX else Vector2(215, 365)
+			enter_room(next_room, next_spawn)
 			if current_room > 0:
 				Tutorial.show_if_new(self, "first_combat_room")
 			if current_room == 3:
@@ -678,6 +748,9 @@ func interact() -> void:
 				show_notice("THE CAVE MOUTH — daylight spills across the goblin wards.")
 			elif current_room == 5:
 				show_notice("THORNWOOD HOLLOW — the hidden world beyond the den.")
+			elif current_room == EXPANSE_ROOM_INDEX:
+				show_notice("THORNWOOD EXPANSE — roam freely; the camera follows across the open wilds.")
+				_auto_save()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("restart"):
@@ -719,6 +792,8 @@ func _process(delta: float) -> void:
 		if auto_save_timer >= 30.0:
 			auto_save_timer = 0.0
 			_auto_save()
+	if current_room == EXPANSE_ROOM_INDEX and player.hp > 0:
+		_update_expanse_discovery()
 	# Polish: keep XP bar in sync
 	xp_bar.max_value = maxi(1, player.xp_to_next)
 	xp_bar.value = player.xp
@@ -765,10 +840,18 @@ func contextual_hint() -> String:
 		if player.position.distance_to(WAR_ROOM) < 85:
 			var next_c: Dictionary = GoblinData.CAMPAIGNS[(campaign_index + 1) % GoblinData.CAMPAIGNS.size()]
 			return "E  War Room — Launch next raid: %s" % next_c["title"]
-	if current_room > 0 and player.position.distance_to(LEFT_GATE) < 75:
+	if current_room == EXPANSE_ROOM_INDEX:
+		for interaction in EXPANSE_INTERACTIONS:
+			if not used_expanse_interactions.has(interaction["id"]) and player.position.distance_to(interaction["pos"]) < 92.0:
+				return interaction["name"]
+	if current_room > 0 and player.position.distance_to(_left_gate_position()) < 75:
 		return "E  Return to " + ROOM_NAMES[current_room - 1]
-	if current_room < ROOM_NAMES.size() - 1 and player.position.distance_to(RIGHT_GATE) < 75:
-		return "Defeat the humans to proceed" if living_enemies() > 0 else "E  Enter " + ROOM_NAMES[current_room + 1]
+	if current_room < ROOM_NAMES.size() - 1 and player.position.distance_to(_right_gate_position()) < 75:
+		if living_enemies() > 0:
+			return "Defeat the guardian to proceed" if current_room >= 3 else "Defeat the humans to proceed"
+		return "E  Enter " + ROOM_NAMES[current_room + 1]
+	if current_room == EXPANSE_ROOM_INDEX:
+		return "Explore freely — %d/%d landmarks discovered. The cave entrance remains your route home." % [discovered_expanse_landmarks.size(), EXPANSE_LANDMARKS.size()]
 	if current_room == 5:
 		return "The den lies safely hidden beneath Thornwood Hollow. Explore, or return through the cave mouth."
 	return "Return home to rest and reforge, or visit War Room for new raids." if completed else "Keys [1-4] Class  •  [Q/RClick] Special  •  [C] Evolve  •  [I] Gear  •  [TAB] Codex"
@@ -777,8 +860,47 @@ func show_notice(words: String) -> void:
 	notice = words
 	notice_time = 4.0
 
+func _update_expanse_discovery() -> void:
+	for landmark in EXPANSE_LANDMARKS:
+		var landmark_id: String = landmark["id"]
+		if discovered_expanse_landmarks.has(landmark_id):
+			continue
+		if player.position.distance_to(landmark["pos"]) <= 105.0:
+			discovered_expanse_landmarks.append(landmark_id)
+			show_notice("LANDMARK DISCOVERED — %s (%d/%d)" % [landmark["name"], discovered_expanse_landmarks.size(), EXPANSE_LANDMARKS.size()])
+			refresh_objective()
+			_auto_save()
+			break
+
+func _try_expanse_interaction() -> bool:
+	for interaction in EXPANSE_INTERACTIONS:
+		var interaction_id: String = interaction["id"]
+		if used_expanse_interactions.has(interaction_id) or player.position.distance_to(interaction["pos"]) >= 92.0:
+			continue
+		used_expanse_interactions.append(interaction_id)
+		match String(interaction["kind"]):
+			"herbs":
+				potions = mini(max_potions, potions + 1)
+				show_notice("You gather bloodmoss and refill one potion.")
+			"shrine":
+				player.heal(30)
+				show_notice("The old goblin shrine restores 30 HP.")
+			"cache":
+				scrap += 8
+				show_notice("The abandoned camp yields 8 scrap.")
+			"ford":
+				scrap += 5
+				show_notice("You recover 5 river-polished scrap from the ford.")
+			"totem":
+				gain_xp(45)
+				show_notice("The old trail marks teach you the forest paths. +45 XP.")
+		_auto_save()
+		queue_redraw()
+		return true
+	return false
+
 func refresh_objective() -> void:
-	if current_room >= 3 and living_enemies() > 0:
+	if current_room >= 3 and current_room <= 5 and living_enemies() > 0:
 		var hunt_names := ["", "", "", "Rootvein Giant Spider", "Cave-Mouth Ogre", "Thornwood Wolf Rider"]
 		objective.text = "Defeat the " + hunt_names[current_room]
 		return
@@ -790,7 +912,9 @@ func refresh_objective() -> void:
 	elif current_room == 4:
 		objective.text = "Step beyond the cave mouth"
 	elif current_room == 5:
-		objective.text = "Explore Thornwood Hollow"
+		objective.text = "Defeat the Wolf Rider and open the forest trail" if living_enemies() > 0 else "Enter the open Thornwood Expanse"
+	elif current_room == EXPANSE_ROOM_INDEX:
+		objective.text = "Explore the open expanse — %d/%d landmarks" % [discovered_expanse_landmarks.size(), EXPANSE_LANDMARKS.size()]
 
 func add_label(parent: Node, words: String, point: Vector2, size: int, color: Color) -> Label:
 	var label := Label.new()
@@ -988,13 +1112,19 @@ func _draw() -> void:
 		marker(WAR_ROOM, "E  WAR ROOM", Color("d9a46c"))
 	if current_room > 0:
 		var left_title := "E  HOME" if current_room == 1 else "E  BACK"
-		marker(LEFT_GATE, left_title, Color("8fb9a5"))
-		draw_line(LEFT_GATE + Vector2(12, 0), LEFT_GATE - Vector2(12, 0), Color("8fb9a5"), 4)
-		draw_line(LEFT_GATE - Vector2(12, 0), LEFT_GATE + Vector2(-3, -9), Color("8fb9a5"), 3)
-		draw_line(LEFT_GATE - Vector2(12, 0), LEFT_GATE + Vector2(-3, 9), Color("8fb9a5"), 3)
+		var left_gate := _left_gate_position()
+		left_title = "E  CAVE ENTRANCE" if current_room == EXPANSE_ROOM_INDEX else left_title
+		marker(left_gate, left_title, Color("8fb9a5"))
+		draw_line(left_gate + Vector2(12, 0), left_gate - Vector2(12, 0), Color("8fb9a5"), 4)
+		draw_line(left_gate - Vector2(12, 0), left_gate + Vector2(-3, -9), Color("8fb9a5"), 3)
+		draw_line(left_gate - Vector2(12, 0), left_gate + Vector2(-3, 9), Color("8fb9a5"), 3)
 	if current_room < ROOM_NAMES.size() - 1:
-		var right_title := "E  OUTSIDE" if current_room == 4 else "E  DEEPER"
+		var right_title := "E  OUTSIDE" if current_room == 4 else ("E  EXPLORE" if current_room == 5 else "E  DEEPER")
 		marker(RIGHT_GATE, right_title, Color("d0b892"))
 		draw_line(RIGHT_GATE - Vector2(12, 0), RIGHT_GATE + Vector2(12, 0), Color("d0b892"), 4)
 		draw_line(RIGHT_GATE + Vector2(12, 0), RIGHT_GATE + Vector2(3, -9), Color("d0b892"), 3)
 		draw_line(RIGHT_GATE + Vector2(12, 0), RIGHT_GATE + Vector2(3, 9), Color("d0b892"), 3)
+	if current_room == EXPANSE_ROOM_INDEX:
+		for interaction in EXPANSE_INTERACTIONS:
+			if not used_expanse_interactions.has(interaction["id"]):
+				marker(interaction["pos"], interaction["name"], Color("a9ca83"))

@@ -275,7 +275,29 @@ func run_checks() -> void:
 	check(dummy.hp == 0, "Dummy dies")
 	await process_frame
 	await process_frame
-	# 14. Ambient cave particle layer exists and never blocks movement
+	# 14. Wolf-gated, continuous Thornwood Expanse progression.
+	fresh.enter_room(5, Vector2(900, 365))
+	await process_frame
+	for actor in fresh.rooms[5].get_children():
+		if actor is CharacterBody2D and actor.is_in_group("enemies"):
+			actor.take_damage(99999)
+	await process_frame
+	await process_frame
+	check(fresh.living_enemies() == 0, "Defeating the entrance wolf clears the trail")
+	fresh.player.position = fresh.RIGHT_GATE
+	fresh.interact()
+	check(fresh.current_room == fresh.EXPANSE_ROOM_INDEX, "Wolf victory unlocks Thornwood Expanse")
+	check(fresh.player.position == fresh.EXPANSE_SPAWN, "Expanse uses its own world-scale spawn")
+	var expanse_camera: Camera2D = fresh.player.get_node("Camera2D")
+	check(expanse_camera.limit_right == 2304 and expanse_camera.limit_bottom == 1440, "Expanse camera follows across large world bounds")
+	check(fresh.get_node("Cave").room_index == fresh.EXPANSE_ROOM_INDEX, "Expanse background and perimeter are active")
+	fresh.player.position = fresh.EXPANSE_LANDMARKS[0]["pos"]
+	fresh._update_expanse_discovery()
+	check(fresh.discovered_expanse_landmarks.size() == 1, "Open-world landmark discovery records exploration")
+	fresh.player.position = fresh.EXPANSE_RETURN_GATE
+	fresh.interact()
+	check(fresh.current_room == 5 and expanse_camera.limit_right == 1152, "Cave return restores room-sized camera limits")
+	# 15. Ambient cave particle layer exists and never blocks movement
 	var cave_node = fresh.get_node_or_null("Cave")
 	check(is_instance_valid(cave_node), "Cave backdrop node exists")
 	check(cave_node.has_method("_draw_ambient_particles"), "Cave has an ambient particle layer")

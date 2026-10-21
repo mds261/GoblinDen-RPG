@@ -6,17 +6,42 @@ const BACKGROUND = preload("res://assets/cave.png")
 const ROOTVEIN_BACKGROUND = preload("res://assets/cave_rootvein_grotto.png")
 const CAVE_MOUTH_BACKGROUND = preload("res://assets/cave_mouth.png")
 const THORNWOOD_BACKGROUND = preload("res://assets/thornwood_hollow.png")
+const THORNWOOD_EXPANSE_BACKGROUND = preload("res://assets/thornwood_expanse.png")
 const BACKGROUNDS: Array[Texture2D] = [
 	BACKGROUND, BACKGROUND, BACKGROUND,
-	ROOTVEIN_BACKGROUND, CAVE_MOUTH_BACKGROUND, THORNWOOD_BACKGROUND
+	ROOTVEIN_BACKGROUND, CAVE_MOUTH_BACKGROUND, THORNWOOD_BACKGROUND,
+	THORNWOOD_EXPANSE_BACKGROUND
 ]
 const ROOM_TINTS: Array[Color] = [
 	Color(1.0, 0.97, 0.88), Color(0.82, 0.91, 1.0), Color(1.0, 0.84, 0.82),
-	Color(0.88, 1.0, 0.94), Color(1.0, 1.0, 0.98), Color(1.0, 1.0, 1.0)
+	Color(0.88, 1.0, 0.94), Color(1.0, 1.0, 0.98), Color(1.0, 1.0, 1.0),
+	Color(1.0, 1.0, 1.0)
 ]
-const WALLS: Array[Rect2] = [
-	Rect2(0, 0, 1152, 100), Rect2(0, 620, 1152, 100),
-	Rect2(0, 100, 80, 520), Rect2(1072, 100, 80, 520)
+const STANDARD_WORLD_SIZE := Vector2(1152, 720)
+const EXPANSE_WORLD_SIZE := Vector2(2304, 1440)
+const EXPANSE_ROOM_INDEX := 6
+const PERIMETER_THICKNESS := 80.0
+var expanse_obstacle_polygons: Array[PackedVector2Array] = [
+	# Central old-growth trees and roots divide the clearing into looping routes.
+	PackedVector2Array([Vector2(850, 90), Vector2(1240, 90), Vector2(1330, 360), Vector2(1210, 640), Vector2(980, 650), Vector2(825, 455)]),
+	# Western thorn grove and cliff-root mass.
+	PackedVector2Array([Vector2(80, 430), Vector2(300, 350), Vector2(515, 455), Vector2(500, 635), Vector2(275, 720), Vector2(80, 650)]),
+	# Old Watch Shrine masonry; its southern face remains approachable.
+	PackedVector2Array([Vector2(560, 545), Vector2(760, 520), Vector2(820, 655), Vector2(760, 745), Vector2(585, 720)]),
+	# Hunter tent, crates, and camp furniture.
+	PackedVector2Array([Vector2(1370, 245), Vector2(1690, 250), Vector2(1740, 405), Vector2(1650, 470), Vector2(1380, 430)]),
+	# Upper stream banks. The ford below this section stays walkable.
+	PackedVector2Array([Vector2(1740, 450), Vector2(1870, 465), Vector2(1810, 650), Vector2(1690, 780), Vector2(1570, 745), Vector2(1650, 610)]),
+	# Lower stream and waterfall. The wooden bridge gap is intentionally open.
+	PackedVector2Array([Vector2(1555, 955), Vector2(1695, 925), Vector2(1680, 1115), Vector2(1585, 1370), Vector2(1450, 1370), Vector2(1510, 1170)]),
+	# Lower-left forest wall.
+	PackedVector2Array([Vector2(80, 1010), Vector2(300, 1015), Vector2(500, 1180), Vector2(735, 1360), Vector2(735, 1440), Vector2(80, 1440)]),
+	# Lower central forest wall leaves the long western path and bridge approach open.
+	PackedVector2Array([Vector2(720, 1260), Vector2(1030, 1160), Vector2(1330, 1235), Vector2(1500, 1440), Vector2(720, 1440)]),
+	# Eastern cliff edge and waterfall drop.
+	PackedVector2Array([Vector2(1985, 650), Vector2(2304, 585), Vector2(2304, 1440), Vector2(1720, 1440), Vector2(1790, 1210), Vector2(1940, 1010)]),
+	# High eastern pines and rocks around the overlook approach.
+	PackedVector2Array([Vector2(1900, 80), Vector2(2150, 80), Vector2(2190, 310), Vector2(2040, 395), Vector2(1880, 310)])
 ]
 const SHADOW_POOLS: Array[Rect2] = [
 	Rect2(250, 118, 220, 56),
@@ -37,20 +62,13 @@ var room_index: int = 0
 var time: float = 0.0
 var chokepoints_active: bool = false
 var pillar_bodies: Array[StaticBody2D] = []
+var perimeter_bodies: Array[StaticBody2D] = []
+var expanse_obstacle_bodies: Array[StaticBody2D] = []
+var expanse_foreground_layers: Array[Polygon2D] = []
 
 func _ready() -> void:
 	z_index = -1
-	for rectangle in WALLS:
-		var wall := StaticBody2D.new()
-		wall.collision_layer = 1
-		wall.collision_mask = 2
-		wall.position = rectangle.get_center()
-		var collision := CollisionShape2D.new()
-		var shape := RectangleShape2D.new()
-		shape.size = rectangle.size
-		collision.shape = shape
-		wall.add_child(collision)
-		add_child(wall)
+	_configure_world_perimeter(STANDARD_WORLD_SIZE)
 	for rect in CHOKEPOINT_PILLARS:
 		var pillar := StaticBody2D.new()
 		pillar.collision_layer = 0
@@ -63,6 +81,95 @@ func _ready() -> void:
 		pillar.add_child(collision)
 		add_child(pillar)
 		pillar_bodies.append(pillar)
+	_create_expanse_obstacles()
+	_set_expanse_obstacles_active(false)
+	_create_expanse_foreground_layers()
+	_set_expanse_foreground_active(false)
+
+func _create_expanse_obstacles() -> void:
+	for index in range(expanse_obstacle_polygons.size()):
+		var body := StaticBody2D.new()
+		body.name = "ExpanseObstacle%d" % index
+		var collision := CollisionPolygon2D.new()
+		collision.polygon = expanse_obstacle_polygons[index]
+		body.add_child(collision)
+		add_child(body)
+		expanse_obstacle_bodies.append(body)
+
+func _set_expanse_obstacles_active(active: bool) -> void:
+	for body in expanse_obstacle_bodies:
+		body.collision_layer = 1 if active else 0
+		body.collision_mask = 2 if active else 0
+
+func _create_expanse_foreground_layers() -> void:
+	# These polygons re-project selected portions of the painted map above the
+	# actors. Their z-index is the prop's ground contact, so walking behind a
+	# pine, shrine, tent, or foreground cliff creates real visual depth while
+	# preserving the original painting exactly.
+	var layers := [
+		{"name": "WestTrailPine", "depth": 700, "points": PackedVector2Array([Vector2(210, 210), Vector2(120, 570), Vector2(170, 700), Vector2(410, 700), Vector2(450, 560), Vector2(330, 250)])},
+		{"name": "CentralOldGrowth", "depth": 650, "points": PackedVector2Array([Vector2(1030, 40), Vector2(855, 430), Vector2(900, 635), Vector2(1240, 650), Vector2(1370, 500), Vector2(1260, 90)])},
+		{"name": "WatchShrine", "depth": 825, "points": PackedVector2Array([Vector2(620, 485), Vector2(560, 690), Vector2(610, 815), Vector2(900, 835), Vector2(965, 700), Vector2(870, 505)])},
+		{"name": "HunterCamp", "depth": 500, "points": PackedVector2Array([Vector2(1390, 225), Vector2(1345, 390), Vector2(1390, 490), Vector2(1740, 500), Vector2(1780, 355), Vector2(1660, 230)])},
+		{"name": "EasternHighPines", "depth": 450, "points": PackedVector2Array([Vector2(1610, 15), Vector2(1490, 300), Vector2(1540, 445), Vector2(1930, 455), Vector2(2020, 300), Vector2(1930, 25)])},
+		{"name": "LowerWestCanopy", "depth": 1390, "points": PackedVector2Array([Vector2(0, 860), Vector2(80, 760), Vector2(260, 720), Vector2(480, 900), Vector2(760, 1230), Vector2(760, 1440), Vector2(0, 1440)])},
+		{"name": "LowerCenterPines", "depth": 1410, "points": PackedVector2Array([Vector2(540, 950), Vector2(720, 840), Vector2(1010, 1090), Vector2(1300, 1210), Vector2(1460, 1440), Vector2(560, 1440)])},
+		{"name": "WaterfallCliff", "depth": 1420, "points": PackedVector2Array([Vector2(1390, 1050), Vector2(1680, 900), Vector2(1870, 980), Vector2(2040, 760), Vector2(2304, 690), Vector2(2304, 1440), Vector2(1450, 1440)])}
+	]
+	var texture_scale := Vector2(
+		EXPANSE_WORLD_SIZE.x / float(THORNWOOD_EXPANSE_BACKGROUND.get_width()),
+		EXPANSE_WORLD_SIZE.y / float(THORNWOOD_EXPANSE_BACKGROUND.get_height())
+	)
+	for entry in layers:
+		var layer := Polygon2D.new()
+		layer.name = entry["name"]
+		layer.polygon = entry["points"]
+		var texture_uv := PackedVector2Array()
+		for point in layer.polygon:
+			texture_uv.append(Vector2(point.x / texture_scale.x, point.y / texture_scale.y))
+		layer.uv = texture_uv
+		layer.texture = THORNWOOD_EXPANSE_BACKGROUND
+		layer.z_as_relative = false
+		layer.z_index = int(entry["depth"])
+		layer.antialiased = true
+		add_child(layer)
+		expanse_foreground_layers.append(layer)
+
+func _set_expanse_foreground_active(active: bool) -> void:
+	for layer in expanse_foreground_layers:
+		layer.visible = active
+
+func _configure_world_perimeter(world_size: Vector2) -> void:
+	for body in perimeter_bodies:
+		if is_instance_valid(body):
+			body.queue_free()
+	perimeter_bodies.clear()
+	var walls: Array[Rect2] = [
+		Rect2(0, 0, world_size.x, PERIMETER_THICKNESS),
+		Rect2(0, world_size.y - PERIMETER_THICKNESS, world_size.x, PERIMETER_THICKNESS),
+		Rect2(0, PERIMETER_THICKNESS, PERIMETER_THICKNESS, world_size.y - PERIMETER_THICKNESS * 2.0),
+		Rect2(world_size.x - PERIMETER_THICKNESS, PERIMETER_THICKNESS, PERIMETER_THICKNESS, world_size.y - PERIMETER_THICKNESS * 2.0)
+	]
+	for rectangle in walls:
+		var wall := StaticBody2D.new()
+		wall.collision_layer = 1
+		wall.collision_mask = 2
+		wall.position = rectangle.get_center()
+		var collision := CollisionShape2D.new()
+		var shape := RectangleShape2D.new()
+		shape.size = rectangle.size
+		collision.shape = shape
+		wall.add_child(collision)
+		add_child(wall)
+		perimeter_bodies.append(wall)
+
+func configure_room(index: int) -> void:
+	room_index = index
+	_configure_world_perimeter(EXPANSE_WORLD_SIZE if room_index == EXPANSE_ROOM_INDEX else STANDARD_WORLD_SIZE)
+	_set_expanse_obstacles_active(room_index == EXPANSE_ROOM_INDEX)
+	_set_expanse_foreground_active(room_index == EXPANSE_ROOM_INDEX)
+	_rebuild_navigation()
+	queue_redraw()
 
 func update_chokepoints(active: bool) -> void:
 	chokepoints_active = active and room_index > 0 and room_index <= 2
@@ -86,7 +193,8 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	var safe_index := clampi(room_index, 0, BACKGROUNDS.size() - 1)
-	draw_texture_rect(BACKGROUNDS[safe_index], Rect2(0, 0, 1152, 720), false, ROOM_TINTS[safe_index])
+	var world_size := EXPANSE_WORLD_SIZE if room_index == EXPANSE_ROOM_INDEX else STANDARD_WORLD_SIZE
+	draw_texture_rect(BACKGROUNDS[safe_index], Rect2(Vector2.ZERO, world_size), false, ROOM_TINTS[safe_index])
 	# Shadow ambush alcoves in combat rooms (Section 3: win through darkness & ambushes)
 	if room_index > 0 and room_index <= 2:
 		for pool in SHADOW_POOLS:
@@ -116,7 +224,7 @@ func _draw() -> void:
 ## Everything is deterministic + cheap, drawn at z_index -1 so it can never
 ## obscure actors, health bars, or the interaction markers.
 func _draw_ambient_particles() -> void:
-	if room_index == 5:
+	if room_index >= 5:
 		_draw_outdoor_ambience()
 		return
 	# --- Layer 1: slow fog wisps (far depth, very low alpha) ---
@@ -189,32 +297,43 @@ func _draw_ambient_particles() -> void:
 			draw_circle(ray_dust, 1.4, Color(1.0, 0.92, 0.62, 0.18))
 
 func _draw_outdoor_ambience() -> void:
+	var world_size := EXPANSE_WORLD_SIZE if room_index == EXPANSE_ROOM_INDEX else STANDARD_WORLD_SIZE
 	# Fireflies hug the shaded lower edge while windblown leaves cross the clearing.
-	for index in range(16):
+	var firefly_count := 34 if room_index == EXPANSE_ROOM_INDEX else 16
+	for index in range(firefly_count):
 		var phase := float(index) * 1.73
-		var firefly := Vector2(90.0 + fmod(float(index) * 83.0, 980.0),
-			440.0 + fmod(float(index) * 37.0, 145.0) + sin(time * 0.9 + phase) * 12.0)
+		var firefly := Vector2(90.0 + fmod(float(index) * 137.0, world_size.x - 180.0),
+			world_size.y * 0.58 + fmod(float(index) * 61.0, world_size.y * 0.28) + sin(time * 0.9 + phase) * 12.0)
 		var pulse := 0.12 + 0.16 * maxf(0.0, sin(time * 2.1 + phase))
 		draw_circle(firefly, 3.8, Color(0.82, 1.0, 0.38, pulse * 0.18))
 		draw_circle(firefly, 1.1, Color(0.92, 1.0, 0.58, pulse))
-	for index in range(10):
-		var travel := fmod(time * (24.0 + float(index) * 2.0) + float(index) * 137.0, 1320.0) - 90.0
-		var leaf := Vector2(travel, 155.0 + float(index) * 39.0 + sin(time * 1.5 + float(index)) * 22.0)
+	var leaf_count := 22 if room_index == EXPANSE_ROOM_INDEX else 10
+	for index in range(leaf_count):
+		var travel := fmod(time * (24.0 + float(index) * 2.0) + float(index) * 137.0, world_size.x + 180.0) - 90.0
+		var leaf := Vector2(travel, 155.0 + fmod(float(index) * 67.0, world_size.y * 0.68) + sin(time * 1.5 + float(index)) * 22.0)
 		var leaf_color := Color(0.45, 0.30 + float(index % 3) * 0.06, 0.10, 0.32)
 		draw_colored_polygon(PackedVector2Array([
 			leaf + Vector2(-3, 0), leaf + Vector2(0, -1.8), leaf + Vector2(3, 0), leaf + Vector2(0, 1.8)
 		]), leaf_color)
 
 func _rebuild_navigation() -> void:
-	navigation.region = Rect2i(0, 0, 48, 30)
+	var world_size := EXPANSE_WORLD_SIZE if room_index == EXPANSE_ROOM_INDEX else STANDARD_WORLD_SIZE
+	var columns := int(world_size.x / 24.0)
+	var rows := int(world_size.y / 24.0)
+	navigation.region = Rect2i(0, 0, columns, rows)
 	navigation.cell_size = Vector2(24, 24)
 	navigation.offset = Vector2(12, 12)
 	navigation.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ONLY_IF_NO_OBSTACLES
 	navigation.update()
-	for y in range(30):
-		for x in range(48):
+	for y in range(rows):
+		for x in range(columns):
 			var point := Vector2(x * 24 + 12, y * 24 + 12)
-			var blocked := point.x < 106 or point.x > 1046 or point.y < 126 or point.y > 594
+			var blocked := point.x < 106 or point.x > world_size.x - 106 or point.y < 126 or point.y > world_size.y - 126
+			if room_index == EXPANSE_ROOM_INDEX:
+				for polygon in expanse_obstacle_polygons:
+					if Geometry2D.is_point_in_polygon(point, polygon):
+						blocked = true
+						break
 			if chokepoints_active:
 				for pillar in CHOKEPOINT_PILLARS:
 					blocked = blocked or pillar.grow(25.0).has_point(point)
@@ -233,13 +352,16 @@ func route_direction(origin: Vector2, destination: Vector2) -> Vector2:
 	return Vector2.ZERO
 
 func _nearest_open_cell(point: Vector2) -> Vector2i:
-	var cell := Vector2i(clampi(int(point.x / 24), 4, 43), clampi(int(point.y / 24), 5, 24))
+	var world_size := EXPANSE_WORLD_SIZE if room_index == EXPANSE_ROOM_INDEX else STANDARD_WORLD_SIZE
+	var max_x := int(world_size.x / 24.0) - 5
+	var max_y := int(world_size.y / 24.0) - 5
+	var cell := Vector2i(clampi(int(point.x / 24), 4, max_x), clampi(int(point.y / 24), 5, max_y))
 	if not navigation.is_point_solid(cell):
 		return cell
 	var best := Vector2i(5, 6)
 	var distance := INF
-	for y in range(5, 25):
-		for x in range(4, 44):
+	for y in range(5, max_y + 1):
+		for x in range(4, max_x + 1):
 			var candidate := Vector2i(x, y)
 			if not navigation.is_point_solid(candidate):
 				var d := Vector2(candidate).distance_squared_to(Vector2(cell))

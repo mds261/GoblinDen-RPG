@@ -12,6 +12,7 @@ script = ExtResource("1")
 shape = SubResource("Body")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+enabled = true
 position_smoothing_enabled = true
 position_smoothing_speed = 7.0
 limit_left = 0

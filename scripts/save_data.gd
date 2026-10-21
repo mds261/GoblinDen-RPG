@@ -8,6 +8,8 @@ const SAVE_PATH := "user://goblin_den_save_single_start_v2.cfg"
 
 static func save(game: Node2D) -> void:
 	var cfg := ConfigFile.new()
+	# Preserve forward-compatible sections when the game updates its autosave.
+	cfg.load(SAVE_PATH)
 	cfg.set_value("progression", "scrap", game.scrap)
 	cfg.set_value("progression", "blade_level", game.blade_level)
 	cfg.set_value("progression", "trap_level", game.trap_level)
@@ -17,6 +19,7 @@ static func save(game: Node2D) -> void:
 	cfg.set_value("progression", "campaign_index", game.campaign_index)
 	cfg.set_value("progression", "captain_defeated", game.captain_defeated)
 	cfg.set_value("progression", "completed", game.completed)
+	cfg.set_value("progression", "thornwood_unlocked", game.thornwood_unlocked)
 	# Player state
 	var player = game.player
 	cfg.set_value("player", "level", player.level)
@@ -32,6 +35,8 @@ static func save(game: Node2D) -> void:
 	# Loot & recruits
 	cfg.set_value("unlocks", "loot", game.unlocked_loot)
 	cfg.set_value("unlocks", "recruits", game.recruited_ids)
+	cfg.set_value("unlocks", "expanse_landmarks", game.discovered_expanse_landmarks)
+	cfg.set_value("unlocks", "expanse_interactions", game.used_expanse_interactions)
 	# Stats tracking
 	if game.has_method("get_stats"):
 		var stats: Dictionary = game.get_stats()
@@ -55,6 +60,7 @@ static func load_data(game: Node2D) -> bool:
 	game.campaign_index = int(cfg.get_value("progression", "campaign_index", 0))
 	game.captain_defeated = bool(cfg.get_value("progression", "captain_defeated", false))
 	game.completed = bool(cfg.get_value("progression", "completed", false))
+	game.thornwood_unlocked = bool(cfg.get_value("progression", "thornwood_unlocked", false))
 	# Restore player state
 	player.level = int(cfg.get_value("player", "level", 1))
 	player.xp = int(cfg.get_value("player", "xp", 0))
@@ -76,6 +82,12 @@ static func load_data(game: Node2D) -> bool:
 	var saved_recruits = cfg.get_value("unlocks", "recruits", [])
 	if saved_recruits is Array:
 		game.recruited_ids.assign(saved_recruits)
+	var saved_landmarks = cfg.get_value("unlocks", "expanse_landmarks", [])
+	if saved_landmarks is Array:
+		game.discovered_expanse_landmarks.assign(saved_landmarks)
+	var saved_interactions = cfg.get_value("unlocks", "expanse_interactions", [])
+	if saved_interactions is Array:
+		game.used_expanse_interactions.assign(saved_interactions)
 	return true
 
 static func has_save() -> bool:
@@ -88,3 +100,4 @@ static func delete_save() -> void:
 static func get_playtime(cfg: ConfigFile = ConfigFile.new()) -> float:
 	cfg.load(SAVE_PATH)
 	return float(cfg.get_value("stats", "total_playtime", 0.0))
+
