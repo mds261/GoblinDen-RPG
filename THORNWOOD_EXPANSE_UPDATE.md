@@ -1,8 +1,8 @@
 # Thornwood Expanse — Layered Continuous 2D Update
 
-The production direction is a continuous painted 2D exterior. The world preserves GoblinDen's established visual identity and complete combat stack while fixing the flat-backdrop problem with foreground occlusion, depth sorting, collision, traversal routes, and a scrolling camera.
+The production direction is a continuous painted 2D exterior. The world preserves GoblinDen's established visual identity and complete combat stack while adding invisible collision, traversal routes, and an immediately responsive scrolling camera.
 
-Characters can pass behind selected trees, the watch shrine, the hunter camp, and foreground cliff masses. Three woodland patrols are spread across the map so the existing attacks, specials, projectiles, companions, status effects, and drops remain visible and playable outdoors.
+The original opaque painting is always rendered behind characters, labels, and combat effects. Opaque foreground polygon copies were removed because they also copied ground pixels and could hide actors. True foreground depth will only be added using properly isolated transparent art. Three woodland patrols are spread across the map so the existing attacks, specials, projectiles, companions, status effects, and drops remain visible and playable outdoors.
 
 ## Progression
 

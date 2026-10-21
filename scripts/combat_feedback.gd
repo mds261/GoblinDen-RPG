@@ -1,5 +1,6 @@
 extends Node
 ## Local hit feedback: short slowdown, bounded camera offset, synthesized cues.
+const CameraFX = preload("res://scripts/camera_fx.gd")
 var impact_time: float = 0.0
 var shake: float = 0.0
 var sound_cooldown: float = 0.0
@@ -31,9 +32,10 @@ func _process(delta: float) -> void:
 	if impact_time <= 0.0:
 		Engine.time_scale = 1.0
 	shake = move_toward(shake, 0.0, real_delta * 28.0)
-	var transform := Transform2D.IDENTITY
-	transform.origin = Vector2(sin(Time.get_ticks_msec() * 0.11), cos(Time.get_ticks_msec() * 0.087)) * shake
-	get_viewport().canvas_transform = transform
+	# NOTE: never write get_viewport().canvas_transform here. Camera2D drives that
+	# value to scroll the view, so overwriting it every frame pins the screen to
+	# the first frame in any area bigger than one screen (the Thornwood Expanse).
+	# Hit shake goes through the player's Camera2D offset instead (see impact()).
 	var player = get_parent().get_node_or_null("BladeGoblin")
 	if is_instance_valid(player):
 		var dodge := "READY" if player.dodge_cooldown <= 0.0 else "%.1fs" % player.dodge_cooldown
@@ -44,6 +46,9 @@ func impact(heavy: bool = false) -> void:
 	impact_time = 0.055 if heavy else 0.035
 	Engine.time_scale = 0.22
 	shake = maxf(shake, 3.0 if heavy else 1.5)
+	var cam := get_parent().get_node_or_null("BladeGoblin/Camera2D") as Camera2D
+	if is_instance_valid(cam):
+		CameraFX.shake(cam, 3.0 if heavy else 1.5, 0.12)
 	play_cue("hurt" if heavy else "hit")
 
 func play_cue(cue: String) -> void:
@@ -81,4 +86,3 @@ func _exit_tree() -> void:
 		voice.stream = null
 	sounds.clear()
 	Engine.time_scale = 1.0
-	get_viewport().canvas_transform = Transform2D.IDENTITY

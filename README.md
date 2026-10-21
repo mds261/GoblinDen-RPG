@@ -6,11 +6,11 @@ Uses pure GDScript and bundled hand-painted dark-fantasy assets (`assets/`). No 
 
 ## New: layered continuous Thornwood exterior
 
-After defeating the Wolf Rider in Thornwood Hollow, the next exit opens a large, uninterrupted painted 2D exploration zone. The exterior keeps the established attacks, specials, projectiles, companions, drops, and enemy behaviors while adding a following camera, physical route boundaries, foreground occlusion, Y-sorted depth, landmarks, interactions, and spaced woodland patrols.
+After defeating the Wolf Rider in Thornwood Hollow, the next exit opens a large, uninterrupted painted 2D exploration zone. The exterior keeps the established attacks, specials, projectiles, companions, drops, and enemy behaviors while adding an immediately responsive following camera, invisible physical route boundaries, landmarks, interactions, and spaced woodland patrols. The opaque painting remains strictly behind every actor and combat effect; foreground cutouts are deferred until properly isolated transparent art is available.
 
 ## Thornwood Expanse - Continuous Exterior Progression
 
-Defeating the **Thornwood Wolf Rider** now opens the trail beyond Thornwood Hollow into the **Thornwood Expanse**. Unlike the earlier 1152x720 cave rooms, this is a **2304x1440 continuous exterior zone**: the player remains at normal gameplay scale while the `Camera2D` follows movement across the landscape. Selected portions of the original painting are re-projected as depth-sorted foreground layers, so characters pass behind trees, the shrine, the hunter camp, and foreground cliffs instead of floating above the entire image.
+Defeating the **Thornwood Wolf Rider** now opens the trail beyond Thornwood Hollow into the **Thornwood Expanse**. Unlike the earlier 1152x720 cave rooms, this is a **2304x1440 continuous exterior zone**: the player remains at normal gameplay scale while the `Camera2D` follows movement across the landscape. The spawn point begins inside the camera's valid tracking range and smoothing is disabled outdoors, preventing the opening view from appearing fixed.
 
 - No room-to-room gates inside the exterior; the player walks freely through one broad woodland region.
 - Branching visual routes connect a fallen-root arch, an old watch shrine, an abandoned hunter camp, a stream ford, and a high overlook.

@@ -30,12 +30,16 @@ func run_checks() -> void:
 	var camera: Camera2D = game.player.get_node("Camera2D")
 	check(camera.limit_right == 2304 and camera.limit_bottom == 1440, "Camera follows within the expanded world bounds")
 	check(camera.enabled and camera.is_current(), "Player camera is explicitly active")
+	check(not camera.position_smoothing_enabled, "Exterior camera responds immediately without smoothing lag")
+	check(game.EXPANSE_SPAWN.x >= 576.0 and game.EXPANSE_SPAWN.y >= 360.0, "Exterior spawn starts inside the camera tracking range")
 	game.player.position = Vector2(1500, 1000)
+	await physics_frame
+	check(camera.get_screen_center_position().x > 1000.0 and camera.get_screen_center_position().y > 700.0, "Exterior camera follows within one physics frame")
 	for frame in range(30):
 		await physics_frame
 	check(camera.get_screen_center_position().x > 1000.0 and camera.get_screen_center_position().y > 700.0, "Camera scrolls after the player leaves the first screen")
 	check(game.get_node("Cave").room_index == game.EXPANSE_ROOM_INDEX, "Expanded background is active")
-	check(game.get_node("Cave").expanse_foreground_layers.size() >= 8, "Painted foreground is split into depth-sorted occlusion layers")
+	check(game.get_node("Cave").get_children().all(func(child): return not child is Polygon2D), "No opaque foreground polygons can cover actors or combat effects")
 	check(game.get_node("Cave").navigation.region.size == Vector2i(96, 60), "Navigation grid scales to the exterior")
 	check(game.living_enemies() == 3, "Existing 2D combat patrols populate the exterior")
 	game.player.position = Vector2(770, 455)

@@ -64,7 +64,6 @@ var chokepoints_active: bool = false
 var pillar_bodies: Array[StaticBody2D] = []
 var perimeter_bodies: Array[StaticBody2D] = []
 var expanse_obstacle_bodies: Array[StaticBody2D] = []
-var expanse_foreground_layers: Array[Polygon2D] = []
 
 func _ready() -> void:
 	z_index = -1
@@ -83,8 +82,6 @@ func _ready() -> void:
 		pillar_bodies.append(pillar)
 	_create_expanse_obstacles()
 	_set_expanse_obstacles_active(false)
-	_create_expanse_foreground_layers()
-	_set_expanse_foreground_active(false)
 
 func _create_expanse_obstacles() -> void:
 	for index in range(expanse_obstacle_polygons.size()):
@@ -100,44 +97,6 @@ func _set_expanse_obstacles_active(active: bool) -> void:
 	for body in expanse_obstacle_bodies:
 		body.collision_layer = 1 if active else 0
 		body.collision_mask = 2 if active else 0
-
-func _create_expanse_foreground_layers() -> void:
-	# These polygons re-project selected portions of the painted map above the
-	# actors. Their z-index is the prop's ground contact, so walking behind a
-	# pine, shrine, tent, or foreground cliff creates real visual depth while
-	# preserving the original painting exactly.
-	var layers := [
-		{"name": "WestTrailPine", "depth": 700, "points": PackedVector2Array([Vector2(210, 210), Vector2(120, 570), Vector2(170, 700), Vector2(410, 700), Vector2(450, 560), Vector2(330, 250)])},
-		{"name": "CentralOldGrowth", "depth": 650, "points": PackedVector2Array([Vector2(1030, 40), Vector2(855, 430), Vector2(900, 635), Vector2(1240, 650), Vector2(1370, 500), Vector2(1260, 90)])},
-		{"name": "WatchShrine", "depth": 825, "points": PackedVector2Array([Vector2(620, 485), Vector2(560, 690), Vector2(610, 815), Vector2(900, 835), Vector2(965, 700), Vector2(870, 505)])},
-		{"name": "HunterCamp", "depth": 500, "points": PackedVector2Array([Vector2(1390, 225), Vector2(1345, 390), Vector2(1390, 490), Vector2(1740, 500), Vector2(1780, 355), Vector2(1660, 230)])},
-		{"name": "EasternHighPines", "depth": 450, "points": PackedVector2Array([Vector2(1610, 15), Vector2(1490, 300), Vector2(1540, 445), Vector2(1930, 455), Vector2(2020, 300), Vector2(1930, 25)])},
-		{"name": "LowerWestCanopy", "depth": 1390, "points": PackedVector2Array([Vector2(0, 860), Vector2(80, 760), Vector2(260, 720), Vector2(480, 900), Vector2(760, 1230), Vector2(760, 1440), Vector2(0, 1440)])},
-		{"name": "LowerCenterPines", "depth": 1410, "points": PackedVector2Array([Vector2(540, 950), Vector2(720, 840), Vector2(1010, 1090), Vector2(1300, 1210), Vector2(1460, 1440), Vector2(560, 1440)])},
-		{"name": "WaterfallCliff", "depth": 1420, "points": PackedVector2Array([Vector2(1390, 1050), Vector2(1680, 900), Vector2(1870, 980), Vector2(2040, 760), Vector2(2304, 690), Vector2(2304, 1440), Vector2(1450, 1440)])}
-	]
-	var texture_scale := Vector2(
-		EXPANSE_WORLD_SIZE.x / float(THORNWOOD_EXPANSE_BACKGROUND.get_width()),
-		EXPANSE_WORLD_SIZE.y / float(THORNWOOD_EXPANSE_BACKGROUND.get_height())
-	)
-	for entry in layers:
-		var layer := Polygon2D.new()
-		layer.name = entry["name"]
-		layer.polygon = entry["points"]
-		var texture_uv := PackedVector2Array()
-		for point in layer.polygon:
-			texture_uv.append(Vector2(point.x / texture_scale.x, point.y / texture_scale.y))
-		layer.uv = texture_uv
-		layer.texture = THORNWOOD_EXPANSE_BACKGROUND
-		layer.z_as_relative = false
-		layer.z_index = int(entry["depth"])
-		layer.antialiased = true
-		add_child(layer)
-		expanse_foreground_layers.append(layer)
-
-func _set_expanse_foreground_active(active: bool) -> void:
-	for layer in expanse_foreground_layers:
-		layer.visible = active
 
 func _configure_world_perimeter(world_size: Vector2) -> void:
 	for body in perimeter_bodies:
@@ -167,7 +126,6 @@ func configure_room(index: int) -> void:
 	room_index = index
 	_configure_world_perimeter(EXPANSE_WORLD_SIZE if room_index == EXPANSE_ROOM_INDEX else STANDARD_WORLD_SIZE)
 	_set_expanse_obstacles_active(room_index == EXPANSE_ROOM_INDEX)
-	_set_expanse_foreground_active(room_index == EXPANSE_ROOM_INDEX)
 	_rebuild_navigation()
 	queue_redraw()
 

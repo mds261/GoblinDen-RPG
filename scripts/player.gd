@@ -167,6 +167,10 @@ func _physics_process(delta: float) -> void:
 	if dodge_time > 0.0:
 		velocity = dodge_direction * speed * 2.8
 	move_and_slide()
+	# The exterior disables camera smoothing. Force the scroll transform after
+	# movement so Web builds cannot display one frame (or more) of stale view.
+	if is_instance_valid(cam) and not cam.position_smoothing_enabled:
+		cam.force_update_scroll()
 	attack_buffer = maxf(0.0, attack_buffer - delta)
 	if Input.is_action_just_pressed("attack"):
 		attack_buffer = 0.14

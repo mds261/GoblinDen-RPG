@@ -330,6 +330,26 @@ func _configure_camera_for_room(index: int) -> void:
 	camera.reset_smoothing()
 	camera.force_update_scroll()
 
+# Safety net: in the open Expanse the camera must follow across the whole
+# 2304x1440 world. If anything left the room-sized limits (1152x720) in place,
+# the camera is pinned to the first screen, so re-apply the world bounds and
+# make sure the player's camera is the active one.
+func _sync_expanse_camera() -> void:
+	var camera: Camera2D = player.get_node_or_null("Camera2D")
+	if not is_instance_valid(camera):
+		return
+	var want_right := int(EXPANSE_WORLD_SIZE.x)
+	var want_bottom := int(EXPANSE_WORLD_SIZE.y)
+	if camera.limit_right != want_right or camera.limit_bottom != want_bottom or camera.limit_left != 0 or camera.limit_top != 0:
+		camera.limit_left = 0
+		camera.limit_top = 0
+		camera.limit_right = want_right
+		camera.limit_bottom = want_bottom
+	if not camera.enabled:
+		camera.enabled = true
+	if not camera.is_current():
+		camera.make_current()
+
 func _left_gate_position() -> Vector2:
 	return EXPANSE_RETURN_GATE if current_room == EXPANSE_ROOM_INDEX else LEFT_GATE
 
@@ -792,6 +812,8 @@ func _process(delta: float) -> void:
 		if auto_save_timer >= 30.0:
 			auto_save_timer = 0.0
 			_auto_save()
+	if current_room == EXPANSE_ROOM_INDEX:
+		_sync_expanse_camera()
 	if current_room == EXPANSE_ROOM_INDEX and player.hp > 0:
 		_update_expanse_discovery()
 	# Polish: keep XP bar in sync
