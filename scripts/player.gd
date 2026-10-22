@@ -10,6 +10,9 @@ const CLASS_ART := {
 	"knight": preload("res://assets/goblin_class_knight.png"),
 	"mage": preload("res://assets/goblin_class_mage.png")
 }
+const DirectionalActor = preload("res://scripts/directional_actor.gd")
+const ClassAnimation = preload("res://scripts/class_animation.gd")
+const BladeAnimation = preload("res://scripts/blade_animation.gd")
 const PaintedActor = preload("res://scripts/painted_actor.gd")
 const GoblinData = preload("res://scripts/goblin_data.gd")
 const Projectile = preload("res://scripts/projectile.gd")
@@ -30,6 +33,9 @@ signal camera_shake_requested(intensity: float, duration: float)
 @export var attack_damage: int = 25
 @export var attack_range: float = 84.0
 
+var appearance_animation = DirectionalActor.new()
+var class_animation = ClassAnimation.new()
+var blade_animation = BladeAnimation.new()
 var animation_time: float = 0.0
 var hp: int = 100
 var facing := Vector2.RIGHT
@@ -73,8 +79,11 @@ func apply_class_and_gear(new_class_id: String, new_evo_id: String = "", keep_hp
 	if not GoblinData.CLASSES.has(new_class_id):
 		return
 	var ratio := float(hp) / float(maxi(1, max_hp))
+	blade_animation = BladeAnimation.new()
+	class_animation = ClassAnimation.new(new_class_id)
 	class_id = new_class_id
 	evolution_id = new_evo_id if GoblinData.EVOLUTIONS.has(new_evo_id) else ""
+	appearance_animation.configure(class_id, evolution_id)
 	var cdata: Dictionary = GoblinData.CLASSES[class_id]
 	var edata: Dictionary = GoblinData.EVOLUTIONS.get(evolution_id, {})
 	var ldata: Dictionary = GoblinData.LOOT_ITEMS.get(equipped_loot_id, {})
@@ -167,6 +176,12 @@ func _physics_process(delta: float) -> void:
 	if dodge_time > 0.0:
 		velocity = dodge_direction * speed * 2.8
 	move_and_slide()
+	appearance_animation.configure(class_id, evolution_id)
+	appearance_animation.update(delta, velocity, hp > 0, velocity.length() / maxf(speed, 1.0))
+	if class_id == "blade":
+		blade_animation.update(delta, velocity.length() > 5.0, hp > 0, velocity.length() / maxf(speed, 1.0))
+	else:
+		class_animation.update(delta, velocity.length() > 5.0, hp > 0, velocity.length() / maxf(speed, 1.0))
 	# The exterior disables camera smoothing. Force the scroll transform after
 	# movement so Web builds cannot display one frame (or more) of stale view.
 	if is_instance_valid(cam) and not cam.position_smoothing_enabled:
@@ -201,6 +216,11 @@ func attack() -> void:
 		cd_mult *= 0.82
 	attack_cooldown = float(cdata["attack_cooldown"]) * cd_mult
 	swing_time = 0.16
+	appearance_animation.start_attack(minf(0.34 if class_id == "blade" else 0.4, attack_cooldown))
+	if class_id == "blade":
+		blade_animation.start_attack(minf(0.34, attack_cooldown))
+	else:
+		class_animation.start_attack(minf(0.4, attack_cooldown))
 	get_tree().call_group("combat_feedback", "play_cue", "swing")
 	swing_counter += 1
 	var base_dmg := get_effective_damage()
@@ -270,6 +290,11 @@ func use_special() -> void:
 	var cdata: Dictionary = GoblinData.CLASSES[class_id]
 	special_cooldown = float(cdata["special_cooldown"])
 	swing_time = 0.25
+	appearance_animation.start_attack(0.34 if class_id == "blade" else 0.4)
+	if class_id == "blade":
+		blade_animation.start_attack()
+	else:
+		class_animation.start_attack()
 	var room_node := _get_active_room_node()
 	var dmg := int(round(get_effective_damage() * 1.45))
 	match class_id:
@@ -462,6 +487,9 @@ func take_damage(amount: int) -> void:
 		camera_shake_requested.emit(4.0, 0.15)
 	queue_redraw()
 	if hp == 0:
+		appearance_animation.update(0.0, Vector2.ZERO, false)
+		blade_animation.update(0.0, false, false)
+		class_animation.update(0.0, false, false)
 		# Polish: death burst effect
 		DeathEffect.burst_ally(get_parent(), global_position)
 		camera_shake_requested.emit(10.0, 0.35)
@@ -478,11 +506,16 @@ func _draw() -> void:
 		var heaviness := clampf(float(last_damage_taken) / 40.0, 0.35, 1.0)
 		tint = tint.lerp(Color(1.0, 0.32, 0.28), flash_strength * 0.8 * heaviness)
 	var role_visual := evolution_id if evolution_id != "" else ""
-	var class_texture: Texture2D = CLASS_ART.get(class_id, CLASS_ART["blade"])
 	var class_size := 94.0 if class_id != "knight" else 98.0
-	PaintedActor.draw_actor(self, class_texture, class_size, facing.x < -0.05,
-		animation_time, velocity.length() > 5.0, swing_time > 0.0,
-		invulnerability > 0.0 and dodge_time <= 0.0, hp <= 0, tint, role_visual)
+	if appearance_animation.uses_sheet():
+		appearance_animation.draw_actor(self, class_size, facing.x < -0.05, velocity.length() > 5.0,
+			invulnerability > 0.0 and dodge_time <= 0.0, hp <= 0, tint)
+	elif class_id == "blade":
+		blade_animation.draw_actor(self, class_size, facing.x < -0.05, velocity.length() > 5.0,
+			invulnerability > 0.0 and dodge_time <= 0.0, hp <= 0, tint, role_visual)
+	else:
+		class_animation.draw_actor(self, class_size, facing.x < -0.05, velocity.length() > 5.0,
+			invulnerability > 0.0 and dodge_time <= 0.0, hp <= 0, tint, role_visual)
 	if hp <= 0:
 		return
 	# Evolution aura ring

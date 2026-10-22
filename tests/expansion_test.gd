@@ -44,14 +44,18 @@ func run_checks() -> void:
 	player.dodge_time = 0
 	player.start_dodge()
 	check(player.dodge_time == 0, "Dodge cooldown")
-	player.position = game.FORGE
+	game.enter_room(game.DenLayout.ARMORY, game.FORGE)
 	game.interact()
 	check(game.blade_level == 1 and game.scrap == 0, "Cannot buy without scrap")
+	if game.current_room == game.DenLayout.ARMORY:
+		game.enter_room(0, game.RIGHT_GATE)
 	player.position = game.RIGHT_GATE
 	game.interact()
 	check(game.current_room == 1 and game.living_enemies() == 2, "Travel into passage")
 	for enemy in game.rooms[1].get_children():
 		enemy.set_physics_process(false)
+	if game.current_room == game.DenLayout.ARMORY:
+		game.enter_room(0, game.RIGHT_GATE)
 	player.position = game.RIGHT_GATE
 	game.interact()
 	check(game.current_room == 1, "Forward exit blocked during battle")
@@ -93,6 +97,8 @@ func run_checks() -> void:
 	player.position = game.REST
 	game.interact()
 	check(player.hp == 100 and game.health_bar.value == 100, "Rest restores health and HUD")
+	if game.current_room == game.DenLayout.ARMORY:
+		game.enter_room(0, game.RIGHT_GATE)
 	player.position = game.RIGHT_GATE
 	game.interact()
 	check(scout.hp == 35, "Enemy HP persists")
@@ -104,7 +110,7 @@ func run_checks() -> void:
 	check(game.living_enemies() == 0, "Passage cleared")
 	# Collect drops by moving onto them, not by calling the reward handler.
 	for drop in game.rooms[1].get_children():
-		if not drop is CharacterBody2D:
+		if is_instance_valid(drop) and drop.get("amount") != null:
 			player.position = drop.position
 			await process_frame
 			await process_frame
@@ -114,13 +120,17 @@ func run_checks() -> void:
 	check(game.scrap == 6, "Dead enemy cannot award again")
 	player.position = game.LEFT_GATE
 	game.interact()
-	player.position = game.FORGE
+	game.enter_room(game.DenLayout.ARMORY, game.FORGE)
 	game.interact()
 	check(game.blade_level == 2 and game.scrap == 3 and player.attack_damage == 35, "Forge purchase")
 	game.interact()
 	check(game.blade_level == 2 and game.scrap == 3, "Second upgrade requires six scrap")
+	if game.current_room == game.DenLayout.ARMORY:
+		game.enter_room(0, game.RIGHT_GATE)
 	player.position = game.RIGHT_GATE
 	game.interact()
+	if game.current_room == game.DenLayout.ARMORY:
+		game.enter_room(0, game.RIGHT_GATE)
 	player.position = game.RIGHT_GATE
 	game.interact()
 	check(game.current_room == 2, "Cleared passage unlocks breach")
@@ -138,7 +148,7 @@ func run_checks() -> void:
 	player.position = game.LEFT_GATE
 	game.interact()
 	check(game.completed and game.current_room == 0, "Return-home victory")
-	player.position = game.FORGE
+	game.enter_room(game.DenLayout.ARMORY, game.FORGE)
 	game.interact()
 	check(game.blade_level == 3 and game.scrap == 5 and player.attack_damage == 45, "Final blade upgrade")
 	game.interact()
@@ -172,16 +182,16 @@ func run_checks() -> void:
 	check(fresh.player.evolution_id == "shaman", "Mage evolves into Shaman")
 	# 2. Story-driven human loot & Treasure Room equipping
 	fresh._on_loot_and_xp_collected("captain_sword", 0)
-	fresh.player.position = fresh.TREASURE_ROOM
+	fresh.enter_room(fresh.DenLayout.TREASURY, fresh.TREASURE_ROOM)
 	fresh.interact()
 	check(fresh.player.equipped_loot_id == "captain_sword", "Treasure Room equips Knight Captain's Sword")
 	# 3. Recruitment Hut & Inverted RPG Party
 	fresh.scrap = 10
-	fresh.player.position = fresh.RECRUITMENT_HUT
+	fresh.enter_room(fresh.DenLayout.STRATEGY, fresh.RECRUITMENT_HUT)
 	fresh.interact()
 	check(fresh.party_nodes.size() == 1 and fresh.recruited_ids[0] == "goblin_archer", "Recruit Goblin Party ally")
 	# 4. War Room escalating campaigns (Coordinated Human Adventuring Party)
-	fresh.player.position = fresh.WAR_ROOM
+	fresh.enter_room(fresh.DenLayout.STRATEGY, fresh.WAR_ROOM)
 	fresh.interact()
 	check(fresh.campaign_index == 1 and fresh.rooms[1].get_child_count() == 3, "War Room launches Tier 2 Guild Party")
 	# ===== POLISH & UX CHECKS =====

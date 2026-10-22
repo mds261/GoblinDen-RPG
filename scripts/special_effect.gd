@@ -15,7 +15,11 @@ func setup(kind: String, direction: Vector2, effect_radius: float) -> void:
 		duration = 1.1
 
 func _ready() -> void:
-	z_index = 50
+	z_as_relative = false
+	z_index = 0
+	var accent := preload("res://scripts/special_accent.gd").new()
+	accent.source = self
+	add_child(accent)
 
 func _process(delta: float) -> void:
 	elapsed += delta
@@ -25,7 +29,11 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	var p := clampf(elapsed / duration, 0.0, 1.0)
-	var fade := 1.0 - p
+	var fade := pow(1.0 - p, 1.2)
+	var bloom := 1.0 - pow(1.0 - p, 3.0)
+	_draw_sigils(p, fade)
+	p = bloom
+	fade *= 0.45
 	match effect_kind:
 		"blade":
 			_draw_blade(p, fade)
@@ -183,3 +191,19 @@ func _draw_ogre_smash(p: float, fade: float) -> void:
 		var length := radius * (0.45 + float(index % 4) * 0.11) * minf(1.0, p * 2.0)
 		draw_line(crack_dir * 12.0, crack_dir * length, Color(0.18, 0.08, 0.03, fade * 0.85), 4.0, true)
 
+
+func _draw_sigils(p: float, fade: float) -> void:
+	var col: Color = preload("res://scripts/special_accent.gd").COLORS.get(effect_kind, Color.WHITE)
+	var bloom := 1.0 - pow(1.0 - minf(p * 2.5, 1.0), 3.0)
+	var r := radius * (0.2 + bloom * 0.65)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1, 0.45))
+	draw_circle(Vector2.ZERO, r, Color(col, fade * 0.06))
+	for i in range(12):
+		var angle := TAU * float(i) / 12.0 + elapsed * 0.35
+		var ray := Vector2.from_angle(angle)
+		var tangent := ray.orthogonal()
+		var center := ray * r
+		draw_arc(Vector2.ZERO, r, angle, angle + 0.25, 8, Color(col, fade * 0.6), 2.0, true)
+		var rune := PackedVector2Array([center - tangent * 4.0 - ray * 8.0, center + ray * 4.0, center + tangent * 4.0 - ray * 8.0, center - ray * 4.0, center - tangent * 4.0 - ray * 8.0])
+		draw_polyline(rune, Color(col, fade * 0.85), 1.5, true)
+	draw_set_transform(Vector2.ZERO)

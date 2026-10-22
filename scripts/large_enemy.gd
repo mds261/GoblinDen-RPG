@@ -1,18 +1,14 @@
 extends CharacterBody2D
 ## Shared miniboss controller for the three creatures guarding the expanded route.
 
-const PaintedActor = preload("res://scripts/painted_actor.gd")
+const EnemyAnimation = preload("res://scripts/enemy_animation.gd")
 const FloatingText = preload("res://scripts/floating_text.gd")
 const DeathEffect = preload("res://scripts/death_effect.gd")
 const HitSpark = preload("res://scripts/hit_spark.gd")
 const MonsterMinion = preload("res://scripts/monster_minion.gd")
 const PoisonCloud = preload("res://scripts/poison_cloud.gd")
 const SpecialEffect = preload("res://scripts/special_effect.gd")
-const ART := {
-	"spider": preload("res://assets/enemy_giant_spider.png"),
-	"ogre": preload("res://assets/enemy_ogre.png"),
-	"wolf_rider": preload("res://assets/enemy_wolf_rider.png")
-}
+
 
 signal defeated
 
@@ -33,6 +29,7 @@ var cooldown_length: float = 1.1
 var art_size: float = 178.0
 
 var target: Node2D
+var appearance_animation = EnemyAnimation.new()
 var animation_time: float = 0.0
 var cooldown: float = 0.8
 var windup: float = 0.0
@@ -93,6 +90,7 @@ func configure(kind: String) -> void:
 	windup_total = max_windup
 
 func _ready() -> void:
+	appearance_animation.configure(enemy_kind)
 	add_to_group("enemies")
 	target = get_tree().get_first_node_in_group("player")
 	hp = max_hp
@@ -100,6 +98,7 @@ func _ready() -> void:
 		call_deferred("_ensure_wolf_pack")
 
 func reset_encounter_motion() -> void:
+	appearance_animation.reset()
 	velocity = Vector2.ZERO
 	knockback = Vector2.ZERO
 	windup = 0.0
@@ -185,6 +184,7 @@ func _summon_spiderlings() -> void:
 	var to_spawn := mini(2, 4 - existing)
 	if to_spawn <= 0:
 		return
+	appearance_animation.release_attack(0.4)
 	status_text = "BROOD AWAKENS"
 	status_text_time = 1.0
 	for index in range(to_spawn):
@@ -192,6 +192,7 @@ func _summon_spiderlings() -> void:
 		_spawn_minion("spiderling", global_position + Vector2.from_angle(angle) * 62.0)
 
 func _drop_poison_cloud() -> void:
+	appearance_animation.release_attack(0.4)
 	var cloud := PoisonCloud.new()
 	get_parent().add_child(cloud)
 	cloud.global_position = target.global_position
@@ -206,6 +207,7 @@ func _ensure_wolf_pack() -> void:
 		var angle := TAU * float(index) / maxf(1.0, float(missing)) + animation_time
 		_spawn_minion("wolf", global_position + Vector2.from_angle(angle) * (78.0 + index * 9.0))
 	if missing > 0:
+		appearance_animation.release_attack(0.4)
 		status_text = "PACK HUNT"
 		status_text_time = 0.9
 
@@ -242,6 +244,7 @@ func _process_damage_over_time(delta: float) -> void:
 		poison_dps = 0
 
 func _execute_attack() -> void:
+	appearance_animation.release_attack(0.38)
 	var victims: Array[Node] = [target]
 	if enemy_kind == "ogre":
 		victims.append_array(get_tree().get_nodes_in_group("allies"))
@@ -307,7 +310,6 @@ func take_damage(amount: int, direction: Vector2 = Vector2.ZERO) -> void:
 		defeated.emit()
 
 func _draw() -> void:
-	var faces_left := is_instance_valid(target) and target.global_position.x < global_position.x
 	if windup > 0.0:
 		var local_strike := to_local(strike_position)
 		var progress := 1.0 - windup / maxf(0.1, windup_total)
@@ -322,12 +324,11 @@ func _draw() -> void:
 		draw_circle(local_strike, telegraph_radius, fill)
 		draw_arc(local_strike, telegraph_radius, 0, TAU, 42, Color("ff9c68"), 2.5 if not special_attack else 6.0, true)
 		draw_arc(local_strike, telegraph_radius, -PI / 2, -PI / 2 + TAU * progress, 42, Color("ffe2a6"), 4.0, true)
-	var texture: Texture2D = ART.get(enemy_kind, ART["spider"])
-	PaintedActor.draw_actor(self, texture, art_size, faces_left, animation_time,
-		velocity.length() > 5.0, windup > 0.0, flash > 0.0, hp <= 0, Color.WHITE, "")
+	appearance_animation.configure(enemy_kind)
+	appearance_animation.draw_actor(self, art_size, flash > 0.0)
 	if hp <= 0:
 		return
-	var top := -art_size * 0.73
+	var top := minf(-art_size * 0.73, appearance_animation.label_top(art_size))
 	draw_rect(Rect2(-82, top - 19, 164, 21), Color(0.035, 0.02, 0.018, 0.88))
 	draw_string(ThemeDB.fallback_font, Vector2(-76, top - 4), display_name, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("f0c99d"))
 	draw_rect(Rect2(-58, top + 8, 116, 7), Color("38242a"))
@@ -340,3 +341,9 @@ func _route_to(destination: Vector2) -> Vector2:
 	if is_instance_valid(cave) and cave.has_method("route_direction"):
 		return cave.route_direction(global_position, destination)
 	return global_position.direction_to(destination)
+
+func _process(delta: float) -> void:
+	appearance_animation.configure(enemy_kind)
+	var aim := strike_position - global_position
+	appearance_animation.update(delta, velocity, hp > 0, windup, windup_total, aim, stun_timer > 0.0)
+	queue_redraw()

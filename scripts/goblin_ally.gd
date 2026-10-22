@@ -9,6 +9,10 @@ const CLASS_ART := {
 	"mage": preload("res://assets/goblin_class_mage.png")
 }
 const FALLBACK_ART = preload("res://assets/goblin_class_blade.png")
+const SummonAnimation = preload("res://scripts/summon_animation.gd")
+const DirectionalActor = preload("res://scripts/directional_actor.gd")
+const ClassAnimation = preload("res://scripts/class_animation.gd")
+const BladeAnimation = preload("res://scripts/blade_animation.gd")
 const PaintedActor = preload("res://scripts/painted_actor.gd")
 const Projectile = preload("res://scripts/projectile.gd")
 const DeathEffect = preload("res://scripts/death_effect.gd")
@@ -23,6 +27,10 @@ var speed: float = 200.0
 var damage: int = 15
 var attack_range: float = 280.0
 var slot_index: int = 0
+var appearance_animation = DirectionalActor.new()
+var class_animation = ClassAnimation.new()
+var blade_animation = BladeAnimation.new()
+var summon_animation = SummonAnimation.new()
 var animation_time: float = 0.0
 var cooldown: float = 0.6
 var support_cooldown: float = 2.5
@@ -39,6 +47,9 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	animation_time += delta
+	summon_animation.configure(role)
+	class_animation.set_class(role)
+	appearance_animation.configure(role)
 	z_index = int(position.y)
 	cooldown = maxf(0.0, cooldown - delta)
 	support_cooldown = maxf(0.0, support_cooldown - delta)
@@ -46,6 +57,8 @@ func _physics_process(delta: float) -> void:
 	flash = maxf(0.0, flash - delta)
 	warcry_timer = maxf(0.0, warcry_timer - delta)
 	if hp <= 0 or not is_visible_in_tree():
+		if is_visible_in_tree():
+			summon_animation.update(delta, Vector2.ZERO, hp > 0, warcry_timer)
 		velocity = Vector2.ZERO
 		queue_redraw()
 		return
@@ -65,6 +78,9 @@ func _physics_process(delta: float) -> void:
 				_fire_projectile(target.global_position, effective_dmg)
 				cooldown = 0.92 if role == "archer" else 1.12
 				swing_time = 0.18
+				summon_animation.start_attack(faces_left)
+				appearance_animation.start_attack(0.34 if role == "blade" else 0.4)
+				class_animation.start_attack()
 			if dist < 135.0:
 				velocity = -to_enemy.normalized() * speed * 0.85
 			elif dist > attack_range * 0.88:
@@ -78,6 +94,12 @@ func _physics_process(delta: float) -> void:
 					target.apply_status(5 if role in ["berserker", "rogue", "wolf"] else 0, 4 if role == "rogue" else 0, 0.0)
 				cooldown = 0.68 if role == "blade" else (1.0 if role == "knight" else 0.82)
 				swing_time = 0.18
+				summon_animation.start_attack(faces_left)
+				appearance_animation.start_attack(0.34 if role == "blade" else 0.4)
+				if role == "blade":
+					blade_animation.start_attack()
+				elif role == "knight":
+					class_animation.start_attack()
 				velocity = Vector2.ZERO
 			else:
 				velocity = _route_to(target.global_position) * speed
@@ -89,6 +111,12 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity = Vector2.ZERO
 	move_and_slide()
+	summon_animation.update(delta, velocity, hp > 0, warcry_timer)
+	appearance_animation.update(delta, velocity, hp > 0, velocity.length() / maxf(speed, 1.0))
+	if role == "blade":
+		blade_animation.update(delta, velocity.length() > 5.0, hp > 0, velocity.length() / maxf(speed, 1.0))
+	elif ClassAnimation.SHEETS.has(role):
+		class_animation.update(delta, velocity.length() > 5.0, hp > 0, velocity.length() / maxf(speed, 1.0))
 	queue_redraw()
 
 func _choose_enemy_target(player: Node2D) -> Node2D:
@@ -128,6 +156,9 @@ func take_damage(amount: int) -> void:
 		FloatingText.spawn_player_hit(parent_node, global_position + Vector2(0, -24), amount)
 	queue_redraw()
 	if hp == 0:
+		appearance_animation.update(0.0, Vector2.ZERO, false)
+		blade_animation.update(0.0, false, false)
+		class_animation.update(0.0, false, false)
 		# Polish: death effect for fallen ally
 		if is_instance_valid(parent_node):
 			DeathEffect.burst_ally(parent_node, global_position)
@@ -135,6 +166,12 @@ func take_damage(amount: int) -> void:
 func revive_and_heal() -> void:
 	hp = max_hp
 	flash = 0.0
+	summon_animation = SummonAnimation.new()
+	summon_animation.configure(role)
+	blade_animation = BladeAnimation.new()
+	class_animation = ClassAnimation.new(role)
+	appearance_animation = DirectionalActor.new()
+	appearance_animation.configure(role)
 	queue_redraw()
 
 func _draw() -> void:
@@ -143,15 +180,25 @@ func _draw() -> void:
 	if role == "knight":
 		draw_size = 80.0
 	elif role == "wolf":
-		tint = Color(0.76, 0.72, 0.66)
-		draw_size = 66.0
+		draw_size = 90.0
 	elif role == "skeleton":
-		tint = Color(0.88, 0.95, 0.90)
+		tint = Color.WHITE
 		draw_size = 72.0
 	var actor_texture: Texture2D = CLASS_ART.get(role, FALLBACK_ART)
 	var role_overlay := "" if CLASS_ART.has(role) else role
-	PaintedActor.draw_actor(self, actor_texture, draw_size, faces_left, animation_time,
-		velocity.length() > 5.0, swing_time > 0.0, flash > 0.0, hp <= 0, tint, role_overlay)
+	if SummonAnimation.SHEETS.has(role):
+		summon_animation.configure(role)
+		summon_animation.draw_actor(self, draw_size, flash > 0.0, hp <= 0)
+	elif CLASS_ART.has(role) and appearance_animation.uses_sheet():
+		appearance_animation.draw_actor(self, draw_size, faces_left, velocity.length() > 5.0, flash > 0.0, hp <= 0, tint)
+	elif role == "blade":
+		blade_animation.draw_actor(self, draw_size, faces_left, velocity.length() > 5.0, flash > 0.0, hp <= 0, tint)
+	elif ClassAnimation.SHEETS.has(role):
+		class_animation.set_class(role)
+		class_animation.draw_actor(self, draw_size, faces_left, velocity.length() > 5.0, flash > 0.0, hp <= 0, tint)
+	else:
+		PaintedActor.draw_actor(self, actor_texture, draw_size, faces_left, animation_time,
+			velocity.length() > 5.0, swing_time > 0.0, flash > 0.0, hp <= 0, tint, role_overlay)
 	if hp <= 0:
 		return
 	if warcry_timer > 0.0:

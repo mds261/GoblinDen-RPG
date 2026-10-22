@@ -1,13 +1,10 @@
 extends CharacterBody2D
 ## Spiderlings and dire wolves supporting the expanded-room minibosses.
 
-const PaintedActor = preload("res://scripts/painted_actor.gd")
+const EnemyAnimation = preload("res://scripts/enemy_animation.gd")
 const FloatingText = preload("res://scripts/floating_text.gd")
 const DeathEffect = preload("res://scripts/death_effect.gd")
-const ART := {
-	"spiderling": preload("res://assets/enemy_giant_spider.png"),
-	"wolf": preload("res://assets/enemy_dire_wolf.png")
-}
+
 
 var minion_kind: String = "spiderling"
 var role: String = "monster_minion"
@@ -29,6 +26,7 @@ var bleed_dps: int = 0
 var poison_dps: int = 0
 var dot_timer: float = 0.0
 var dot_tick: float = 0.0
+var appearance_animation = EnemyAnimation.new()
 var animation_time: float = 0.0
 var target: Node2D
 var death_time: float = 0.0
@@ -48,11 +46,13 @@ func configure(kind: String) -> void:
 	hp = max_hp
 
 func _ready() -> void:
+	appearance_animation.configure(minion_kind)
 	add_to_group("enemies")
 	target = get_tree().get_first_node_in_group("player")
 	hp = max_hp
 
 func reset_encounter_motion() -> void:
+	appearance_animation.reset()
 	velocity = Vector2.ZERO
 	knockback = Vector2.ZERO
 	windup = 0.0
@@ -84,6 +84,8 @@ func _physics_process(delta: float) -> void:
 		var offset: Vector2 = target.global_position - global_position
 		var distance := offset.length()
 		if distance <= (52.0 if minion_kind == "wolf" else 44.0) and cooldown <= 0.0:
+			appearance_animation.faces_left = offset.x < 0.0
+			appearance_animation.release_attack(0.28)
 			target.take_damage(damage)
 			cooldown = 0.78 if minion_kind == "wolf" else 0.95
 			windup = 0.18
@@ -136,13 +138,12 @@ func take_damage(amount: int, direction: Vector2 = Vector2.ZERO) -> void:
 			game.call_deferred("refresh_objective")
 
 func _draw() -> void:
-	var faces_left := is_instance_valid(target) and target.global_position.x < global_position.x
 	var draw_size := 78.0 if minion_kind == "wolf" else 57.0
-	PaintedActor.draw_actor(self, ART[minion_kind], draw_size, faces_left, animation_time,
-		velocity.length() > 5.0, windup > 0.0, flash > 0.0, hp <= 0, Color.WHITE, "")
+	appearance_animation.configure(minion_kind)
+	appearance_animation.draw_actor(self, draw_size, flash > 0.0)
 	if hp <= 0:
 		return
-	var top := -draw_size * 0.73
+	var top := minf(-draw_size * 0.73, appearance_animation.label_top(draw_size))
 	draw_rect(Rect2(-24, top, 48, 4), Color("2b2024"))
 	draw_rect(Rect2(-24, top, 48.0 * float(hp) / max_hp, 4), Color("b84f3d"))
 
@@ -151,3 +152,9 @@ func _route_to(destination: Vector2) -> Vector2:
 	if is_instance_valid(cave) and cave.has_method("route_direction"):
 		return cave.route_direction(global_position, destination)
 	return global_position.direction_to(destination)
+
+func _process(delta: float) -> void:
+	appearance_animation.configure(minion_kind)
+	var aim := target.global_position - global_position if is_instance_valid(target) else Vector2.ZERO
+	appearance_animation.update(delta, velocity, hp > 0, 0.0, 0.18, aim, stun_timer > 0.0)
+	queue_redraw()

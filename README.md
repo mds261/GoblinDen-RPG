@@ -1,3 +1,11 @@
+Latest update: see [START_HERE_ENEMY_ANIMATIONS.md](START_HERE_ENEMY_ANIMATIONS.md) for unified Blade sprites, all enemy roles, spiders and the F6 enemy gallery.
+
+Latest update: see [START_HERE_CONNECTED_DEN.md](START_HERE_CONNECTED_DEN.md) for the connected den rooms and outdoor collision fixes.
+
+Latest update: see [START_HERE_SUMMONS_SPECIALS.md](START_HERE_SUMMONS_SPECIALS.md) for Cave Fang, skeleton summons, animated signature effects and the F6 preview gallery.
+
+Latest update: see [START_HERE_DIRECTIONAL.md](START_HERE_DIRECTIONAL.md) for four-direction walking, all nine evolution appearances, and the animated gallery.
+
 # Goblin Den — Painted Dark Fantasy (Expanded Goblin Perspective RPG)
 
 An expanded Godot 4 top-down dark-fantasy RPG built from the **Goblin Perspective RPG** concept document: begin as a surviving goblin in an underground tribe, switch and evolve across **4 core classes** and **9 advanced specializations**, build up **8 Goblin Den facilities**, assemble an **inverted RPG party** of goblin followers, steal **story-driven human weapons** with stat tradeoffs, use **cave shadow ambushes, chokepoints, and traps**, and repel **5 escalating tiers of coordinated human adventuring parties**.

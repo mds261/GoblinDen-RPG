@@ -10,39 +10,26 @@ const THORNWOOD_EXPANSE_BACKGROUND = preload("res://assets/thornwood_expanse.png
 const BACKGROUNDS: Array[Texture2D] = [
 	BACKGROUND, BACKGROUND, BACKGROUND,
 	ROOTVEIN_BACKGROUND, CAVE_MOUTH_BACKGROUND, THORNWOOD_BACKGROUND,
-	THORNWOOD_EXPANSE_BACKGROUND
+	THORNWOOD_EXPANSE_BACKGROUND,
+	preload("res://assets/den_treasury.png"),
+	preload("res://assets/den_armory.png"),
+	preload("res://assets/den_strategy.png")
 ]
 const ROOM_TINTS: Array[Color] = [
 	Color(1.0, 0.97, 0.88), Color(0.82, 0.91, 1.0), Color(1.0, 0.84, 0.82),
 	Color(0.88, 1.0, 0.94), Color(1.0, 1.0, 0.98), Color(1.0, 1.0, 1.0),
-	Color(1.0, 1.0, 1.0)
+	Color(1.0, 1.0, 1.0), Color.WHITE, Color.WHITE, Color.WHITE
 ]
 const STANDARD_WORLD_SIZE := Vector2(1152, 720)
 const EXPANSE_WORLD_SIZE := Vector2(2304, 1440)
 const EXPANSE_ROOM_INDEX := 6
 const PERIMETER_THICKNESS := 80.0
-var expanse_obstacle_polygons: Array[PackedVector2Array] = [
-	# Central old-growth trees and roots divide the clearing into looping routes.
-	PackedVector2Array([Vector2(850, 90), Vector2(1240, 90), Vector2(1330, 360), Vector2(1210, 640), Vector2(980, 650), Vector2(825, 455)]),
-	# Western thorn grove and cliff-root mass.
-	PackedVector2Array([Vector2(80, 430), Vector2(300, 350), Vector2(515, 455), Vector2(500, 635), Vector2(275, 720), Vector2(80, 650)]),
-	# Old Watch Shrine masonry; its southern face remains approachable.
-	PackedVector2Array([Vector2(560, 545), Vector2(760, 520), Vector2(820, 655), Vector2(760, 745), Vector2(585, 720)]),
-	# Hunter tent, crates, and camp furniture.
-	PackedVector2Array([Vector2(1370, 245), Vector2(1690, 250), Vector2(1740, 405), Vector2(1650, 470), Vector2(1380, 430)]),
-	# Upper stream banks. The ford below this section stays walkable.
-	PackedVector2Array([Vector2(1740, 450), Vector2(1870, 465), Vector2(1810, 650), Vector2(1690, 780), Vector2(1570, 745), Vector2(1650, 610)]),
-	# Lower stream and waterfall. The wooden bridge gap is intentionally open.
-	PackedVector2Array([Vector2(1555, 955), Vector2(1695, 925), Vector2(1680, 1115), Vector2(1585, 1370), Vector2(1450, 1370), Vector2(1510, 1170)]),
-	# Lower-left forest wall.
-	PackedVector2Array([Vector2(80, 1010), Vector2(300, 1015), Vector2(500, 1180), Vector2(735, 1360), Vector2(735, 1440), Vector2(80, 1440)]),
-	# Lower central forest wall leaves the long western path and bridge approach open.
-	PackedVector2Array([Vector2(720, 1260), Vector2(1030, 1160), Vector2(1330, 1235), Vector2(1500, 1440), Vector2(720, 1440)]),
-	# Eastern cliff edge and waterfall drop.
-	PackedVector2Array([Vector2(1985, 650), Vector2(2304, 585), Vector2(2304, 1440), Vector2(1720, 1440), Vector2(1790, 1210), Vector2(1940, 1010)]),
-	# High eastern pines and rocks around the overlook approach.
-	PackedVector2Array([Vector2(1900, 80), Vector2(2150, 80), Vector2(2190, 310), Vector2(2040, 395), Vector2(1880, 310)])
-]
+const DenLayout = preload("res://scripts/den_layout.gd")
+const ExpanseGeometry = preload("res://scripts/expanse_geometry.gd")
+var expanse_obstacle_polygons: Array[PackedVector2Array] = ExpanseGeometry.polygons()
+var navigation_obstacles: Array[PackedVector2Array] = []
+var bridge_navigation_obstacles: Array[PackedVector2Array] = []
+var debug_collision_overlay := false
 const SHADOW_POOLS: Array[Rect2] = [
 	Rect2(250, 118, 220, 56),
 	Rect2(680, 118, 220, 56),
@@ -103,11 +90,14 @@ func _configure_world_perimeter(world_size: Vector2) -> void:
 		if is_instance_valid(body):
 			body.queue_free()
 	perimeter_bodies.clear()
+	var floor_bounds := Rect2(Vector2.ONE * PERIMETER_THICKNESS, world_size - Vector2.ONE * PERIMETER_THICKNESS * 2.0)
+	if room_index in [DenLayout.TREASURY, DenLayout.ARMORY, DenLayout.STRATEGY]:
+		floor_bounds = DenLayout.ROOM_FLOOR
 	var walls: Array[Rect2] = [
-		Rect2(0, 0, world_size.x, PERIMETER_THICKNESS),
-		Rect2(0, world_size.y - PERIMETER_THICKNESS, world_size.x, PERIMETER_THICKNESS),
-		Rect2(0, PERIMETER_THICKNESS, PERIMETER_THICKNESS, world_size.y - PERIMETER_THICKNESS * 2.0),
-		Rect2(world_size.x - PERIMETER_THICKNESS, PERIMETER_THICKNESS, PERIMETER_THICKNESS, world_size.y - PERIMETER_THICKNESS * 2.0)
+		Rect2(0, 0, world_size.x, floor_bounds.position.y),
+		Rect2(0, floor_bounds.end.y, world_size.x, world_size.y - floor_bounds.end.y),
+		Rect2(0, floor_bounds.position.y, floor_bounds.position.x, floor_bounds.size.y),
+		Rect2(floor_bounds.end.x, floor_bounds.position.y, world_size.x - floor_bounds.end.x, floor_bounds.size.y)
 	]
 	for rectangle in walls:
 		var wall := StaticBody2D.new()
@@ -176,13 +166,19 @@ func _draw() -> void:
 		for ring in range(5):
 			draw_circle(point, 22.0 + ring * 10.0, Color(0.95, 0.47, 0.12, 0.012 * flicker))
 	_draw_ambient_particles()
+	if debug_collision_overlay and room_index == EXPANSE_ROOM_INDEX:
+		for polygon in expanse_obstacle_polygons:
+			draw_colored_polygon(polygon, Color(0.9, 0.1, 0.12, 0.28))
+			var outline := polygon.duplicate()
+			outline.append(polygon[0])
+			draw_polyline(outline, Color(1.0, 0.5, 0.3, 0.8), 3.0, true)
 
 ## Layered ambient cave atmosphere: drifting dust motes, rising torch embers,
 ## slow fog wisps, and (in combat rooms) cold ceiling drips.
 ## Everything is deterministic + cheap, drawn at z_index -1 so it can never
 ## obscure actors, health bars, or the interaction markers.
 func _draw_ambient_particles() -> void:
-	if room_index >= 5:
+	if room_index in [5, EXPANSE_ROOM_INDEX]:
 		_draw_outdoor_ambience()
 		return
 	# --- Layer 1: slow fog wisps (far depth, very low alpha) ---
@@ -283,15 +279,30 @@ func _rebuild_navigation() -> void:
 	navigation.offset = Vector2(12, 12)
 	navigation.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ONLY_IF_NO_OBSTACLES
 	navigation.update()
+	navigation_obstacles.clear()
+	bridge_navigation_obstacles.clear()
+	if room_index == EXPANSE_ROOM_INDEX:
+		for polygon in expanse_obstacle_polygons:
+			# Actor radius 15 + cell half-diagonal 17: corner-safe pathfinding.
+			navigation_obstacles.append_array(Geometry2D.offset_polygon(polygon, 32.0))
+			# The narrow bridge needs body-sized clearance instead of full-cell padding.
+			bridge_navigation_obstacles.append_array(Geometry2D.offset_polygon(polygon, 18.0))
+	for station in DenLayout.STATIONS:
+		if station["room"] == room_index:
+			var rect: Rect2 = DenLayout.footprint(station["cell"]).grow(32.0)
+			navigation_obstacles.append(PackedVector2Array([rect.position, Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y)]))
 	for y in range(rows):
 		for x in range(columns):
 			var point := Vector2(x * 24 + 12, y * 24 + 12)
 			var blocked := point.x < 106 or point.x > world_size.x - 106 or point.y < 126 or point.y > world_size.y - 126
-			if room_index == EXPANSE_ROOM_INDEX:
-				for polygon in expanse_obstacle_polygons:
-					if Geometry2D.is_point_in_polygon(point, polygon):
-						blocked = true
-						break
+			if room_index in [DenLayout.TREASURY, DenLayout.ARMORY, DenLayout.STRATEGY]:
+				blocked = blocked or not DenLayout.ROOM_FLOOR.grow(-32.0).has_point(point)
+			var near_bridge := room_index == EXPANSE_ROOM_INDEX and Rect2(900, 525, 270, 110).has_point(point * ExpanseGeometry.SOURCE_SIZE / EXPANSE_WORLD_SIZE)
+			var obstacles := bridge_navigation_obstacles if near_bridge else navigation_obstacles
+			for polygon in obstacles:
+				if Geometry2D.is_point_in_polygon(point, polygon):
+					blocked = true
+					break
 			if chokepoints_active:
 				for pillar in CHOKEPOINT_PILLARS:
 					blocked = blocked or pillar.grow(25.0).has_point(point)
