@@ -56,6 +56,7 @@ func _physics_process(delta: float) -> void:
 					boss_state = "charging"
 					state_time = 0.8
 					charge_hit = false
+					appearance_animation.release_attack(0.8)
 				elif boss_state == "sweep":
 					_sweep()
 					_recover(1.15)
@@ -99,6 +100,7 @@ func _recover(duration: float) -> void:
 	velocity = Vector2.ZERO
 
 func _sweep() -> void:
+	appearance_animation.release_attack(0.35)
 	var victims: Array = get_tree().get_nodes_in_group("allies")
 	victims.append(target)
 	for victim in victims:
@@ -112,6 +114,7 @@ func _sweep() -> void:
 	get_tree().call_group("combat_feedback", "play_cue", "swing")
 
 func _rally() -> void:
+	appearance_animation.release_attack(0.4)
 	var game = get_parent().get_parent()
 	for offset in [Vector2(-75, -65), Vector2(-75, 65)]:
 		var point: Vector2 = global_position + offset
@@ -127,6 +130,7 @@ func _rally() -> void:
 	show_floating_text("HOLD THE LINE!")
 
 func reset_encounter_motion() -> void:
+	appearance_animation.reset()
 	_recover(1.0)
 
 func _draw() -> void:

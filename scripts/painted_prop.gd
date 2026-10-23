@@ -5,11 +5,28 @@ const CORE_ART = preload("res://assets/den_props.png")
 const STATION_ART = preload("res://assets/den_stations_v2.png")
 const CELL_SIZE := Vector2(512, 512)
 
+const DenLayout = preload("res://scripts/den_layout.gd")
+var obstacle: StaticBody2D
 var cell: int = 0
 var time: float = 0.0
 
 func _ready() -> void:
 	z_index = int(position.y)
+	obstacle = StaticBody2D.new()
+	obstacle.collision_layer = 0
+	obstacle.collision_mask = 2
+	var collision := CollisionShape2D.new()
+	var footprint: Rect2 = DenLayout.footprint(cell)
+	var shape := RectangleShape2D.new()
+	shape.size = footprint.size
+	collision.shape = shape
+	collision.position = footprint.get_center() - DenLayout.station_position(cell)
+	obstacle.add_child(collision)
+	add_child(obstacle)
+
+func set_collision_active(active: bool) -> void:
+	if is_instance_valid(obstacle):
+		obstacle.collision_layer = 1 if active else 0
 
 func _process(delta: float) -> void:
 	time += delta

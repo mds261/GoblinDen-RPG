@@ -3,7 +3,7 @@ extends RefCounted
 ## Tracks which hints have been shown via a meta dict on the game node.
 
 const HINTS := {
-	"first_spawn": "Welcome to your Goblin Den! Use WASD to move. Explore the 8 facilities around you.",
+	"first_spawn": "Welcome to your Goblin Den! Use WASD to move. Use [E] at passages to visit the Treasure Room, Armory and Strategy Room.",
 	"near_forge": "The FORGE reforges your blade for more damage. Spend scrap to power up!",
 	"near_rest": "Rest at the FIRE to restore HP, revive allies, and refill Bloodmoss Potions.",
 	"near_training": "The TRAINING PIT lets you evolve into advanced specializations at Level 2+.",

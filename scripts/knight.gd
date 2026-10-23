@@ -4,8 +4,7 @@ extends CharacterBody2D
 ## "mage" (AoE spellcaster), "ranger" (backline kiter), "rogue" (trap disarmer/flanker),
 ## and "boss" (commander/champion).
 
-const ART = preload("res://assets/human_knight.png")
-const PaintedActor = preload("res://scripts/painted_actor.gd")
+const EnemyAnimation = preload("res://scripts/enemy_animation.gd")
 const Projectile = preload("res://scripts/projectile.gd")
 const FloatingText = preload("res://scripts/floating_text.gd")
 const DeathEffect = preload("res://scripts/death_effect.gd")
@@ -22,6 +21,7 @@ signal defeated
 @export var loot_drop_id: String = ""
 @export var role: String = "knight"
 
+var appearance_animation = EnemyAnimation.new()
 var animation_time: float = 0.0
 var hp: int = 100
 var target: Node2D
@@ -50,6 +50,7 @@ var heal_beam_pos := Vector2.ZERO
 var heal_beam_time: float = 0.0
 
 func _ready() -> void:
+	appearance_animation.configure(role)
 	hp = max_hp
 	target = get_tree().get_first_node_in_group("player")
 	if role == "mage":
@@ -150,6 +151,7 @@ func _process_priest_ai(offset: Vector2, dist: float, move_speed: float) -> void
 			wounded_ally.show_floating_text("+24 HEAL")
 			heal_beam_pos = wounded_ally.global_position
 			heal_beam_time = 0.45
+			appearance_animation.release_attack(0.45)
 			support_cooldown = 3.4
 			return
 	if dist < 150.0:
@@ -199,6 +201,7 @@ func _process_rogue_ai(offset: Vector2, dist: float, move_speed: float) -> void:
 		velocity = (_route_to(target.global_position) + perp).normalized() * move_speed
 
 func _execute_windup_attack(effective_dmg: int) -> void:
+	appearance_animation.release_attack()
 	if not is_instance_valid(target) or target.hp <= 0:
 		return
 	if role == "ranger" or role == "priest":
@@ -306,7 +309,6 @@ func _draw() -> void:
 	var size := 124.0 if captain else 104.0
 	if role in ["rogue", "ranger", "priest"]:
 		size = 98.0
-	var flip := is_instance_valid(target) and target.position.x > position.x
 	# Draw Priest heal beam when active
 	if heal_beam_time > 0.0:
 		draw_line(Vector2.ZERO, to_local(heal_beam_pos), Color(1.0, 0.92, 0.45, heal_beam_time * 1.6), 4.0, true)
@@ -325,29 +327,8 @@ func _draw() -> void:
 			draw_circle(local_strike, strike_radius, fill_col)
 			draw_arc(local_strike, strike_radius, 0, TAU, 40, ring_col, 2.5, true)
 			draw_arc(local_strike, strike_radius, -PI / 2, -PI / 2 + TAU * progress, 40, Color("ffe4ae"), 3, true)
-	var tint := Color.WHITE
-	var badge := ""
-	match role:
-		"boss":
-			tint = Color(1.12, 0.95, 0.80)
-			badge = "human_boss"
-		"priest":
-			tint = Color(1.08, 1.04, 0.84)
-			badge = "human_priest"
-		"mage":
-			tint = Color(0.98, 0.84, 1.12)
-			badge = "human_mage"
-		"ranger":
-			tint = Color(0.86, 1.02, 0.86)
-			badge = "human_ranger"
-		"rogue":
-			tint = Color(0.78, 0.82, 0.92)
-			badge = "human_rogue"
-		_:
-			if captain:
-				tint = Color(1.1, 0.96, 0.83)
-	PaintedActor.draw_actor(self, ART, size, flip, animation_time,
-		velocity.length() > 5.0, windup > 0.0, flash > 0.0, hp <= 0, tint, badge)
+	appearance_animation.configure(role)
+	appearance_animation.draw_actor(self, size, flash > 0.0)
 	if hp <= 0:
 		return
 	# Status indicators (bleed, poison, stun, knight shield aura)
@@ -357,7 +338,7 @@ func _draw() -> void:
 		draw_circle(Vector2(18, -32), 4.0, Color("5cd966"))
 	if stun_timer > 0.0:
 		draw_arc(Vector2(0, -size * 0.72), 16.0, animation_time * 4.0, animation_time * 4.0 + PI * 1.4, 14, Color("ffe875"), 2.5, true)
-	var top := -size * 0.84
+	var top := minf(-size * 0.84, appearance_animation.label_top(size))
 	draw_rect(Rect2(-62, top - 16, 124, 19), Color(0.04, 0.035, 0.03, 0.8))
 	draw_string(ThemeDB.fallback_font, Vector2(-56, top - 2), display_name, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("decbae"))
 	draw_rect(Rect2(-28, top + 8, 56, 5), Color("342830"))
@@ -370,3 +351,16 @@ func _route_to(destination: Vector2) -> Vector2:
 	if is_instance_valid(cave) and cave.has_method("route_direction"):
 		return cave.route_direction(global_position, destination)
 	return global_position.direction_to(destination)
+
+func _process(delta: float) -> void:
+	appearance_animation.configure(role)
+	var aim := strike_position - global_position
+	appearance_animation.update(delta, velocity, hp > 0, windup, max_windup, aim, stun_timer > 0.0)
+	queue_redraw()
+
+func reset_encounter_motion() -> void:
+	velocity = Vector2.ZERO
+	knockback = Vector2.ZERO
+	windup = 0.0
+	cooldown = 0.8
+	appearance_animation.reset()

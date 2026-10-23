@@ -14,6 +14,8 @@ const FloatingText = preload("res://scripts/floating_text.gd")
 const DeathEffect = preload("res://scripts/death_effect.gd")
 const LargeEnemy = preload("res://scripts/large_enemy.gd")
 
+const DenLayout = preload("res://scripts/den_layout.gd")
+
 const ROOM_NAMES = [
 	"THE GOBLIN DEN",
 	"ASHEN PASSAGE",
@@ -21,17 +23,20 @@ const ROOM_NAMES = [
 	"ROOTVEIN GROTTO",
 	"THE CAVE MOUTH",
 	"THORNWOOD HOLLOW",
-	"THORNWOOD EXPANSE"
+	"THORNWOOD EXPANSE",
+	"THE TREASURE ROOM",
+	"THE ARMORY",
+	"THE STRATEGY ROOM"
 ]
 const CLASS_ORDER: Array[String] = ["blade", "archer", "knight", "mage"]
 const FORGE := Vector2(350, 350)
-const REST := Vector2(650, 460)
-const TRAINING_PIT := Vector2(215, 205)
-const ARCHERY_TRAP_SHOP := Vector2(485, 195)
-const SHAMAN_HUT := Vector2(735, 195)
-const RECRUITMENT_HUT := Vector2(935, 215)
-const TREASURE_ROOM := Vector2(220, 520)
-const WAR_ROOM := Vector2(895, 520)
+const REST := Vector2(410, 350)
+const TRAINING_PIT := Vector2(350, 350)
+const ARCHERY_TRAP_SHOP := Vector2(760, 350)
+const SHAMAN_HUT := Vector2(750, 350)
+const RECRUITMENT_HUT := Vector2(800, 350)
+const TREASURE_ROOM := Vector2(575, 350)
+const WAR_ROOM := Vector2(575, 430)
 const LEFT_GATE := Vector2(140, 365)
 const RIGHT_GATE := Vector2(1010, 365)
 const EXPANSE_RETURN_GATE := Vector2(310, 245)
@@ -40,14 +45,14 @@ const EXPANSE_WORLD_SIZE := Vector2(2304, 1440)
 const EXPANSE_ROOM_INDEX := 6
 const EXPANSE_LANDMARKS := [
 	{"id": "fallen_arch", "name": "Fallen-Root Arch", "pos": Vector2(410, 925)},
-	{"id": "watch_shrine", "name": "Old Watch Shrine", "pos": Vector2(845, 720)},
+	{"id": "watch_shrine", "name": "Old Watch Shrine", "pos": Vector2(950, 795)},
 	{"id": "hunter_camp", "name": "Abandoned Hunter Camp", "pos": Vector2(1535, 510)},
 	{"id": "stream_ford", "name": "Whispering Stream Ford", "pos": Vector2(1715, 850)},
 	{"id": "high_overlook", "name": "Thornwood High Overlook", "pos": Vector2(2035, 510)}
 ]
 const EXPANSE_INTERACTIONS := [
 	{"id": "root_herbs", "name": "E  FORAGE HERBS", "pos": Vector2(430, 970), "kind": "herbs"},
-	{"id": "shrine_blessing", "name": "E  USE SHRINE", "pos": Vector2(845, 735), "kind": "shrine"},
+	{"id": "shrine_blessing", "name": "E  USE SHRINE", "pos": Vector2(960, 820), "kind": "shrine"},
 	{"id": "camp_cache", "name": "E  SEARCH CAMP", "pos": Vector2(1535, 520), "kind": "cache"},
 	{"id": "ford_cache", "name": "E  SEARCH FORD", "pos": Vector2(1715, 855), "kind": "ford"},
 	{"id": "overlook_totem", "name": "E  TRAIL TOTEM", "pos": Vector2(2035, 520), "kind": "totem"}
@@ -125,13 +130,13 @@ func _ready() -> void:
 		_spawn_large_enemies()
 		_populate_campaign_enemies(0)
 		_spawn_exterior_encounters()
-	enter_room(0, Vector2(460, 375))
+	enter_room(0, Vector2(575, 400))
 	update_health(player.hp, player.max_hp)
 	if restored_save:
 		show_notice("Save loaded — welcome back, Goblin Chief!")
 		Tutorial.show_if_new(self, "save_loaded")
 	else:
-		show_notice("Choose class [1-4] in the Den, or head right [E] to repel the humans.")
+		show_notice("Explore the den passages [E], or head right to repel the humans.")
 		Tutorial.show_if_new(self, "first_spawn")
 
 ## Re-spawns the recruited Goblin Party recorded in the save file.
@@ -160,21 +165,23 @@ func _restore_recruited_party() -> void:
 	_sync_party_for_active_class()
 
 func _spawn_den_facilities() -> void:
-	var stations := [
-		{"cell": 0, "pos": FORGE},
-		{"cell": 1, "pos": REST},
-		{"cell": 2, "pos": TRAINING_PIT},
-		{"cell": 3, "pos": ARCHERY_TRAP_SHOP},
-		{"cell": 4, "pos": SHAMAN_HUT},
-		{"cell": 5, "pos": RECRUITMENT_HUT},
-		{"cell": 6, "pos": TREASURE_ROOM},
-		{"cell": 7, "pos": WAR_ROOM}
-	]
-	for st in stations:
+	for st in DenLayout.STATIONS:
 		var prop = PROP.new()
 		prop.cell = st["cell"]
 		prop.position = st["pos"]
-		rooms[0].add_child(prop)
+		rooms[st["room"]].add_child(prop)
+
+func is_den_room() -> bool:
+	return DenLayout.is_safe(current_room)
+
+func _try_den_portal() -> bool:
+	for portal in DenLayout.PORTALS.get(current_room, []):
+		if player.position.distance_to(portal["pos"]) < 75.0:
+			enter_room(portal["to"], portal["spawn"])
+			show_notice("Entered " + ROOM_NAMES[current_room] + ".")
+			_auto_save()
+			return true
+	return false
 
 func _spawn_large_enemies() -> void:
 	var encounters := [
@@ -275,6 +282,8 @@ func enter_room(index: int, spawn_point: Vector2) -> void:
 		rooms[room_index].visible = active
 		rooms[room_index].process_mode = Node.PROCESS_MODE_INHERIT if active else Node.PROCESS_MODE_DISABLED
 		for actor in rooms[room_index].get_children():
+			if actor.has_method("set_collision_active"):
+				actor.set_collision_active(active)
 			if actor is CharacterBody2D and actor.is_in_group("enemies"):
 				actor.collision_layer = 2 if active and actor.hp > 0 else 0
 				actor.collision_mask = 3 if active and actor.hp > 0 else 0
@@ -452,7 +461,7 @@ func gain_xp(amount: int) -> void:
 func select_goblin_class(new_class_id: String) -> void:
 	if player.hp <= 0:
 		return
-	if current_room != 0:
+	if not is_den_room():
 		show_notice("Return to the Goblin Den to switch base class.")
 		return
 	if not GoblinData.CLASSES.has(new_class_id):
@@ -524,7 +533,16 @@ func _sync_summons() -> void:
 		summon_nodes.append(wolf)
 
 func _spawn_skeleton_minion(pos: Vector2) -> void:
-	if summon_nodes.size() >= 2:
+	var living := 0
+	for summon in summon_nodes.duplicate():
+		if not is_instance_valid(summon):
+			summon_nodes.erase(summon)
+		elif summon.hp <= 0:
+			summon_nodes.erase(summon)
+			get_tree().create_timer(0.75).timeout.connect(summon.queue_free)
+		else:
+			living += 1
+	if living >= 2:
 		return
 	var skel := GoblinAlly.new()
 	skel.ally_id = "risen_skeleton"
@@ -541,7 +559,7 @@ func _spawn_skeleton_minion(pos: Vector2) -> void:
 	summon_nodes.append(skel)
 
 func _on_player_special_used(skill_name: String) -> void:
-	if player.evolution_id == "necromancer" and current_room > 0:
+	if player.evolution_id == "necromancer" and not is_den_room():
 		var side: Vector2 = player.facing.rotated(PI * 0.5) * 25.0
 		_spawn_skeleton_minion(player.position + player.facing * 42.0 + side)
 		_spawn_skeleton_minion(player.position + player.facing * 42.0 - side)
@@ -703,13 +721,13 @@ func interact() -> void:
 		return
 	if current_room == EXPANSE_ROOM_INDEX and _try_expanse_interaction():
 		return
-	if current_room == 0:
-		if player.position.distance_to(FORGE) < 85:
+	if is_den_room():
+		if current_room == DenLayout.station_room(0) and player.position.distance_to(FORGE) < 85:
 			Tutorial.show_if_new(self, "near_forge")
 			upgrade_blade()
 			_auto_save()
 			return
-		if player.position.distance_to(REST) < 85:
+		if current_room == DenLayout.station_room(1) and player.position.distance_to(REST) < 85:
 			Tutorial.show_if_new(self, "near_rest")
 			player.hp = player.max_hp
 			potions = max_potions
@@ -720,40 +738,42 @@ func interact() -> void:
 			show_notice("Rested by the den fire. HP, party, and potions restored.")
 			_auto_save()
 			return
-		if player.position.distance_to(TRAINING_PIT) < 80:
+		if current_room == DenLayout.station_room(2) and player.position.distance_to(TRAINING_PIT) < 80:
 			Tutorial.show_if_new(self, "near_training")
 			cycle_base_class()
 			return
-		if player.position.distance_to(ARCHERY_TRAP_SHOP) < 80:
+		if current_room == DenLayout.station_room(3) and player.position.distance_to(ARCHERY_TRAP_SHOP) < 80:
 			Tutorial.show_if_new(self, "near_archery")
 			upgrade_archery_and_traps()
 			_auto_save()
 			return
-		if player.position.distance_to(SHAMAN_HUT) < 80:
+		if current_room == DenLayout.station_room(4) and player.position.distance_to(SHAMAN_HUT) < 80:
 			Tutorial.show_if_new(self, "near_shaman")
 			use_shaman_hut()
 			_auto_save()
 			return
-		if player.position.distance_to(RECRUITMENT_HUT) < 80:
+		if current_room == DenLayout.station_room(5) and player.position.distance_to(RECRUITMENT_HUT) < 80:
 			Tutorial.show_if_new(self, "near_recruit")
 			recruit_goblin_follower()
 			return
-		if player.position.distance_to(TREASURE_ROOM) < 80:
+		if current_room == DenLayout.station_room(6) and player.position.distance_to(TREASURE_ROOM) < 80:
 			Tutorial.show_if_new(self, "near_treasure")
 			cycle_equipped_loot()
 			return
-		if player.position.distance_to(WAR_ROOM) < 85:
+		if current_room == DenLayout.station_room(7) and player.position.distance_to(WAR_ROOM) < 85:
 			Tutorial.show_if_new(self, "near_war_room")
 			advance_war_room_campaign()
 			return
-	if current_room > 0 and player.position.distance_to(_left_gate_position()) < 75:
+	if _try_den_portal():
+		return
+	if current_room > 0 and current_room <= EXPANSE_ROOM_INDEX and player.position.distance_to(_left_gate_position()) < 75:
 		enter_room(current_room - 1, Vector2(935, 365))
 		if current_room == 0 and captain_defeated:
 			completed = true
 			show_notice("DEN SAVED! Visit the WAR ROOM to launch higher-tier raids or press R.")
 			_auto_save()
 		return
-	if current_room < ROOM_NAMES.size() - 1 and player.position.distance_to(_right_gate_position()) < 75:
+	if current_room < EXPANSE_ROOM_INDEX and player.position.distance_to(_right_gate_position()) < 75:
 		if living_enemies() > 0:
 			show_notice("Defeat the guardian here to open the way forward." if current_room >= 3 else "Defeat the humans here to open the way forward.")
 		else:
@@ -807,7 +827,7 @@ func _process(delta: float) -> void:
 	if save_indicator_time > 0.0:
 		save_indicator_time = maxf(0.0, save_indicator_time - delta)
 		save_indicator.modulate.a = clampf(save_indicator_time / 0.9, 0.0, 1.0)
-	if current_room == 0 and player.hp > 0:
+	if is_den_room() and player.hp > 0:
 		auto_save_timer += delta
 		if auto_save_timer >= 30.0:
 			auto_save_timer = 0.0
@@ -839,36 +859,41 @@ func _process(delta: float) -> void:
 func contextual_hint() -> String:
 	if player.hp <= 0:
 		return "Press R to begin a fresh run."
-	if current_room == 0:
-		if player.position.distance_to(FORGE) < 85:
+	if is_den_room():
+		if current_room == DenLayout.station_room(0) and player.position.distance_to(FORGE) < 85:
 			var max_tier := 3 + campaign_index
 			return "E  Reforge blade — %d scrap (+10 damage)" % (blade_level * 3) if blade_level < max_tier else "Blade fully upgraded"
-		if player.position.distance_to(REST) < 85:
+		if current_room == DenLayout.station_room(1) and player.position.distance_to(REST) < 85:
 			return "E  Rest at the fire — restore all HP, party & potions"
-		if player.position.distance_to(TRAINING_PIT) < 80:
+		if current_room == DenLayout.station_room(2) and player.position.distance_to(TRAINING_PIT) < 80:
 			var next_class := CLASS_ORDER[(CLASS_ORDER.find(player.class_id) + 1) % CLASS_ORDER.size()]
 			return "E  Try next class: %s  •  [1-4] pick directly  •  [C] evolve" % GoblinData.CLASSES[next_class]["name"]
-		if player.position.distance_to(ARCHERY_TRAP_SHOP) < 80:
+		if current_room == DenLayout.station_room(3) and player.position.distance_to(ARCHERY_TRAP_SHOP) < 80:
 			return "E  Archery & Trap Workshop — %d scrap (+12 trap & +6 ranged dmg)" % (trap_level * 3)
-		if player.position.distance_to(SHAMAN_HUT) < 80:
+		if current_room == DenLayout.station_room(4) and player.position.distance_to(SHAMAN_HUT) < 80:
 			return "E  Shaman Hut — Brew Bloodmoss Potions & Hex upgrades (2-3 scrap)"
-		if player.position.distance_to(RECRUITMENT_HUT) < 80:
+		if current_room == DenLayout.station_room(5) and player.position.distance_to(RECRUITMENT_HUT) < 80:
 			var next_ally := _next_recruit_entry()
 			if not next_ally.is_empty():
 				return "E  Recruit %s — %d scrap (%s)" % [next_ally["name"], next_ally["cost"], next_ally["summary"]]
 			return "E  Recruitment Hut — Heal your full four-class squad"
-		if player.position.distance_to(TREASURE_ROOM) < 80:
+		if current_room == DenLayout.station_room(6) and player.position.distance_to(TREASURE_ROOM) < 80:
 			return "E  Treasure Room — Equip stolen human weapons (%d unlocked)" % unlocked_loot.size()
-		if player.position.distance_to(WAR_ROOM) < 85:
+		if current_room == DenLayout.station_room(7) and player.position.distance_to(WAR_ROOM) < 85:
 			var next_c: Dictionary = GoblinData.CAMPAIGNS[(campaign_index + 1) % GoblinData.CAMPAIGNS.size()]
 			return "E  War Room — Launch next raid: %s" % next_c["title"]
 	if current_room == EXPANSE_ROOM_INDEX:
 		for interaction in EXPANSE_INTERACTIONS:
 			if not used_expanse_interactions.has(interaction["id"]) and player.position.distance_to(interaction["pos"]) < 92.0:
 				return interaction["name"]
-	if current_room > 0 and player.position.distance_to(_left_gate_position()) < 75:
+	for portal in DenLayout.PORTALS.get(current_room, []):
+		if player.position.distance_to(portal["pos"]) < 75.0:
+			return "E  Enter " + portal["title"]
+	if is_den_room() and current_room != 0:
+		return "Explore the room's stations, or use [E] at a passage to continue through the den."
+	if current_room > 0 and current_room <= EXPANSE_ROOM_INDEX and player.position.distance_to(_left_gate_position()) < 75:
 		return "E  Return to " + ROOM_NAMES[current_room - 1]
-	if current_room < ROOM_NAMES.size() - 1 and player.position.distance_to(_right_gate_position()) < 75:
+	if current_room < EXPANSE_ROOM_INDEX and player.position.distance_to(_right_gate_position()) < 75:
 		if living_enemies() > 0:
 			return "Defeat the guardian to proceed" if current_room >= 3 else "Defeat the humans to proceed"
 		return "E  Enter " + ROOM_NAMES[current_room + 1]
@@ -922,14 +947,16 @@ func _try_expanse_interaction() -> bool:
 	return false
 
 func refresh_objective() -> void:
+	if is_den_room():
+		objective.text = {0: "Rest, heal and explore your den", 7: "Inspect and equip stolen treasures", 8: "Reforge weapons and upgrade traps", 9: "Train, recruit and plan your next raid"}[current_room]
+		return
+
 	if current_room >= 3 and current_room <= 5 and living_enemies() > 0:
 		var hunt_names := ["", "", "", "Rootvein Giant Spider", "Cave-Mouth Ogre", "Thornwood Wolf Rider"]
 		objective.text = "Defeat the " + hunt_names[current_room]
 		return
 	objective.text = "Return to your den" if captain_defeated else "Drive out the human incursion"
-	if current_room == 0 and captain_defeated:
-		objective.text = "Den defended — visit War Room for next raid"
-	elif captain_defeated and current_room < 4:
+	if captain_defeated and current_room < 4:
 		objective.text = "Explore the forgotten route to the cave mouth"
 	elif current_room == 4:
 		objective.text = "Step beyond the cave mouth"
@@ -1123,16 +1150,14 @@ func marker(point: Vector2, title: String, color: Color) -> void:
 
 func _draw() -> void:
 	# Parent draws behind actors. All stations use distance-based interaction.
-	if current_room == 0:
-		marker(FORGE, "E  FORGE", Color("d2b589"))
-		marker(REST, "E  REST", Color("e0a668"))
-		marker(TRAINING_PIT, "E  TRY NEXT CLASS", Color("c99878"))
-		marker(ARCHERY_TRAP_SHOP, "E  ARCHERY/TRAPS", Color("a8cf86"))
-		marker(SHAMAN_HUT, "E  SHAMAN HUT", Color("7dd9a3"))
-		marker(RECRUITMENT_HUT, "E  RECRUIT PARTY", Color("d99185"))
-		marker(TREASURE_ROOM, "E  TREASURE/LOOT", Color("ebcc75"))
-		marker(WAR_ROOM, "E  WAR ROOM", Color("d9a46c"))
-	if current_room > 0:
+	if is_den_room():
+		for station in DenLayout.STATIONS:
+			if station["room"] == current_room:
+				marker(station["pos"], station["title"], Color("dfc28e"))
+		for portal in DenLayout.PORTALS.get(current_room, []):
+			_den_door(portal["pos"], portal["title"])
+
+	if current_room > 0 and current_room <= EXPANSE_ROOM_INDEX:
 		var left_title := "E  HOME" if current_room == 1 else "E  BACK"
 		var left_gate := _left_gate_position()
 		left_title = "E  CAVE ENTRANCE" if current_room == EXPANSE_ROOM_INDEX else left_title
@@ -1140,8 +1165,8 @@ func _draw() -> void:
 		draw_line(left_gate + Vector2(12, 0), left_gate - Vector2(12, 0), Color("8fb9a5"), 4)
 		draw_line(left_gate - Vector2(12, 0), left_gate + Vector2(-3, -9), Color("8fb9a5"), 3)
 		draw_line(left_gate - Vector2(12, 0), left_gate + Vector2(-3, 9), Color("8fb9a5"), 3)
-	if current_room < ROOM_NAMES.size() - 1:
-		var right_title := "E  OUTSIDE" if current_room == 4 else ("E  EXPLORE" if current_room == 5 else "E  DEEPER")
+	if current_room < EXPANSE_ROOM_INDEX:
+		var right_title := "E  RAID" if current_room == 0 else ("E  OUTSIDE" if current_room == 4 else ("E  EXPLORE" if current_room == 5 else "E  DEEPER"))
 		marker(RIGHT_GATE, right_title, Color("d0b892"))
 		draw_line(RIGHT_GATE - Vector2(12, 0), RIGHT_GATE + Vector2(12, 0), Color("d0b892"), 4)
 		draw_line(RIGHT_GATE + Vector2(12, 0), RIGHT_GATE + Vector2(3, -9), Color("d0b892"), 3)
@@ -1150,3 +1175,15 @@ func _draw() -> void:
 		for interaction in EXPANSE_INTERACTIONS:
 			if not used_expanse_interactions.has(interaction["id"]):
 				marker(interaction["pos"], interaction["name"], Color("a9ca83"))
+
+func _den_door(point: Vector2, title: String) -> void:
+	draw_arc(point, 31.0, 0, TAU, 32, Color(0.67, 0.85, 0.72, 0.55), 2.0, true)
+	var label := "E  " + title
+	var width := maxf(126.0, ThemeDB.fallback_font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 13).x + 24.0)
+	draw_rect(Rect2(point + Vector2(-width * 0.5, 36), Vector2(width, 25)), Color(0.03, 0.035, 0.025, 0.87))
+	draw_string(ThemeDB.fallback_font, point + Vector2(-width * 0.5 + 12, 53), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color("b8dbba"))
+	draw_circle(point, 4.0, Color("b8dbba"))
+	var direction := Vector2.UP if point.y < 200 else (Vector2.DOWN if point.y > 500 else (Vector2.LEFT if point.x < 200 else Vector2.RIGHT))
+	draw_line(point - direction * 12, point + direction * 12, Color("b8dbba"), 3.0, true)
+	draw_line(point + direction * 12, point + direction * 4 + direction.orthogonal() * 7, Color("b8dbba"), 2.0, true)
+	draw_line(point + direction * 12, point + direction * 4 - direction.orthogonal() * 7, Color("b8dbba"), 2.0, true)

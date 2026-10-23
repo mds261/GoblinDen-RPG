@@ -15,7 +15,7 @@ func run() -> void:
 	var game = scene.instantiate()
 	root.add_child(game)
 	await process_frame
-	check(game.rooms.size() == 6, "World should contain six connected rooms.")
+	check(game.rooms.size() == 10, "World should contain seven original rooms and three connected den rooms.")
 	check(game.ROOM_NAMES[3] == "ROOTVEIN GROTTO", "Rootvein Grotto room is missing.")
 	check(game.ROOM_NAMES[4] == "THE CAVE MOUTH", "Cave Mouth room is missing.")
 	check(game.ROOM_NAMES[5] == "THORNWOOD HOLLOW", "Thornwood Hollow room is missing.")
