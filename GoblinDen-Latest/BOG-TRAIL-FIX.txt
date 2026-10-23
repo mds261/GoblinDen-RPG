@@ -1,0 +1,10 @@
+Bog Trail entrance fix
+
+The old forest entrance at (1900, 1000) was inside the cliff collision.
+The marker and interaction now share a point on the walkable trail east of the bridge at (1850, 850).
+Cross the wooden bridge, follow the path on the east bank, and press E at Bog trail: Tier 2.
+
+Open GoblinDen-Bog-Trail-Fixed/project.godot in Godot and run the main scene.
+This keeps the existing save-file identity; no new game is required.
+
+Validation: Godot 4.7.2 import, full player-body collision sweeps along paths from all three forest arrival points, and RPG integration checks passed.

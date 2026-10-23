@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "armor_bonus": 0.05,
+      "aura_color": {
+        "_type": "Color",
+        "a": 1.0,
+        "b": 0.61176472902298,
+        "g": 0.831372559070587,
+        "r": 0.486274510622025
+      },
+      "base_class": "blade",
+      "crit_bonus": 0.28,
+      "damage_bonus": 10,
+      "hp_bonus": 15,
+      "id": "assassin",
+      "name": "ASSASSIN",
+      "speed_bonus": 28.0,
+      "summary": "Lethal backstabs (+40% crit, venom + bleed burst, shadow step)",
+      "special_id": "special_assassin"
+    },
+    {
+      "armor_bonus": 0.08,
+      "aura_color": {
+        "_type": "Color",
+        "a": 1.0,
+        "b": 0.356862753629684,
+        "g": 0.658823549747467,
+        "r": 0.850980401039124
+      },
+      "base_class": "archer",
+      "crit_bonus": 0.15,
+      "damage_bonus": 9,
+      "hp_bonus": 30,
+      "id": "beastmaster",
+      "name": "BEASTMASTER",
+      "speed_bonus": 18.0,
+      "summary": "Summons a loyal Cave Fang Wolf companion & marks prey for the pack",
+      "special_id": "special_beastmaster"
+    },
+    {
+      "armor_bonus": 0.1,
+      "aura_color": {
+        "_type": "Color",
+        "a": 1.0,
+        "b": 0.266666680574417,
+        "g": 0.364705890417099,
+        "r": 0.890196084976196
+      },
+      "base_class": "blade",
+      "crit_bonus": 0.12,
+      "damage_bonus": 14,
+      "hp_bonus": 40,
+      "id": "berserker",
+      "name": "BERSERKER",
+      "speed_bonus": 16.0,
+      "summary": "Frenzied cleaver (+40 HP, lifesteal on hit, faster swings when wounded)",
+      "special_id": "special_berserker"
+    },
+    {
+      "armor_bonus": 0.2,
+      "aura_color": {
+        "_type": "Color",
+        "a": 1.0,
+        "b": 0.901960790157318,
+        "g": 0.721568644046783,
+        "r": 0.498039215803146
+      },
+      "base_class": "knight",
+      "crit_bonus": 0.08,
+      "damage_bonus": 8,
+      "hp_bonus": 65,
+      "id": "guardian",
+      "name": "GUARDIAN",
+      "speed_bonus": 6.0,
+      "summary": "Impenetrable bulwark (+65 HP, +20% armor, reflects blocked damage)",
+      "special_id": "special_guardian"
+    },
+    {
+      "armor_bonus": 0.05,
+      "aura_color": {
+        "_type": "Color",
+        "a": 1.0,
+        "b": 0.423529416322708,
+        "g": 0.850980401039124,
+        "r": 0.603921592235565
+      },
+      "base_class": "archer",
+      "crit_bonus": 0.25,
+      "damage_bonus": 11,
+      "hp_bonus": 20,
+      "id": "hunter",
+      "name": "HUNTER",
+      "speed_bonus": 22.0,
+      "summary": "3-arrow spread volley, armor-shredding razor traps, +25% crit",
+      "special_id": "special_hunter"
+    },
+    {
+      "armor_bonus": 0.08,
+      "aura_color": {
+        "_type": "Color",
+        "a": 1.0,
+        "b": 0.7843137383461,
+        "g": 0.850980401039124,
+        "r": 0.560784339904785
+      },
+      "base_class": "mage",
+      "crit_bonus": 0.15,
+      "damage_bonus": 12,
+      "hp_bonus": 25,
+      "id": "necromancer",
+      "name": "NECROMANCER",
+      "speed_bonus": 10.0,
+      "summary": "Raises fallen human bones as Risen Skeleton minions to fight for the den",
+      "special_id": "special_necromancer"
+    },
+    {
+      "armor_bonus": 0.08,
+      "aura_color": {
+        "_type": "Color",
+        "a": 1.0,
+        "b": 0.584313750267029,
+        "g": 0.850980401039124,
+        "r": 0.423529416322708
+      },
+      "base_class": "mage",
+      "crit_bonus": 0.12,
+      "damage_bonus": 10,
+      "hp_bonus": 30,
+      "id": "shaman",
+      "name": "SHAMAN",
+      "speed_bonus": 14.0,
+      "summary": "Tribal healing pulse restores goblin party HP & coats weapons in venom",
+      "special_id": "special_shaman"
+    },
+    {
+      "armor_bonus": 0.05,
+      "aura_color": {
+        "_type": "Color",
+        "a": 1.0,
+        "b": 0.721568644046783,
+        "g": 0.407843142747879,
+        "r": 0.839215695858002
+      },
+      "base_class": "mage",
+      "crit_bonus": 0.2,
+      "damage_bonus": 18,
+      "hp_bonus": 20,
+      "id": "warlock",
+      "name": "WARLOCK",
+      "speed_bonus": 12.0,
+      "summary": "Explosive hellfire bolts & life-draining abyssal curses",
+      "special_id": "special_warlock"
+    },
+    {
+      "armor_bonus": 0.12,
+      "aura_color": {
+        "_type": "Color",
+        "a": 1.0,
+        "b": 0.364705890417099,
+        "g": 0.721568644046783,
+        "r": 0.941176474094391
+      },
+      "base_class": "knight",
+      "crit_bonus": 0.12,
+      "damage_bonus": 13,
+      "hp_bonus": 45,
+      "id": "warlord",
+      "name": "WARLORD",
+      "speed_bonus": 15.0,
+      "summary": "Goblin Chief's Warcry buffs all goblin allies (+35% damage) & shockwave slams",
+      "special_id": "special_warlord"
+    }
+  ]
+}

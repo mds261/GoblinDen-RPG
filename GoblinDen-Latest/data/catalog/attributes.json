@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "name": "Dexterity",
+      "starting_value": 0,
+      "id": "Dexterity"
+    },
+    {
+      "name": "Intelligence",
+      "starting_value": 0,
+      "id": "Intelligence"
+    },
+    {
+      "name": "Strength",
+      "starting_value": 0,
+      "id": "Strength"
+    },
+    {
+      "name": "Vitality",
+      "starting_value": 0,
+      "id": "Vitality"
+    },
+    {
+      "name": "Willpower",
+      "starting_value": 0,
+      "id": "Willpower"
+    }
+  ]
+}

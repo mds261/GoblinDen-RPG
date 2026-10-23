@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "name": "VENOM STARFALL",
+      "cooldown": 3.2,
+      "kind": "class_special",
+      "id": "special_archer"
+    },
+    {
+      "name": "SHADOW FLURRY",
+      "cooldown": 3.8,
+      "kind": "class_special",
+      "id": "special_blade"
+    },
+    {
+      "name": "IRONQUAKE BULWARK",
+      "cooldown": 4.2,
+      "kind": "class_special",
+      "id": "special_knight"
+    },
+    {
+      "name": "ASTRAL HEX NOVA",
+      "cooldown": 4.0,
+      "kind": "class_special",
+      "id": "special_mage"
+    },
+    {
+      "name": "NIGHTSTEP EXECUTION",
+      "cooldown": 3.8,
+      "kind": "class_special",
+      "id": "special_assassin"
+    },
+    {
+      "name": "PACK HUNT",
+      "cooldown": 3.2,
+      "kind": "class_special",
+      "id": "special_beastmaster"
+    },
+    {
+      "name": "BLOODSTORM CYCLONE",
+      "cooldown": 3.8,
+      "kind": "class_special",
+      "id": "special_berserker"
+    },
+    {
+      "name": "AEGIS DOME",
+      "cooldown": 4.2,
+      "kind": "class_special",
+      "id": "special_guardian"
+    },
+    {
+      "name": "PREDATOR'S ARROWSTORM",
+      "cooldown": 3.2,
+      "kind": "class_special",
+      "id": "special_hunter"
+    },
+    {
+      "name": "GRAVE LEGION",
+      "cooldown": 4.0,
+      "kind": "class_special",
+      "id": "special_necromancer"
+    },
+    {
+      "name": "ANCESTRAL BLOOM",
+      "cooldown": 4.0,
+      "kind": "class_special",
+      "id": "special_shaman"
+    },
+    {
+      "name": "SOULFIRE METEOR",
+      "cooldown": 4.0,
+      "kind": "class_special",
+      "id": "special_warlock"
+    },
+    {
+      "name": "CHIEFTAIN'S WARCRY",
+      "cooldown": 4.2,
+      "kind": "class_special",
+      "id": "special_warlord"
+    },
+    {
+      "cooldown": 3.0,
+      "cost": 18,
+      "damage": 34,
+      "radius": 65.0,
+      "range": 350.0,
+      "name": "Fireball",
+      "kind": "hotbar",
+      "id": "fireball"
+    },
+    {
+      "cooldown": 6.0,
+      "cost": 22,
+      "heal": 35,
+      "name": "Heal",
+      "kind": "hotbar",
+      "id": "heal"
+    },
+    {
+      "cooldown": 3.0,
+      "cost": 12,
+      "damage": 32,
+      "radius": 24.0,
+      "range": 420.0,
+      "name": "Piercing shot",
+      "kind": "hotbar",
+      "id": "piercing_shot"
+    },
+    {
+      "cooldown": 1.0,
+      "cost": 0,
+      "name": "Potion",
+      "kind": "hotbar",
+      "id": "potion"
+    },
+    {
+      "cooldown": 4.0,
+      "cost": 10,
+      "damage": 22,
+      "radius": 45.0,
+      "range": 95.0,
+      "name": "Shield bash",
+      "kind": "hotbar",
+      "id": "shield_bash"
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "armor": 0.0,
+      "attack_cooldown": 0.42,
+      "attack_range": 370.0,
+      "base_damage": 22,
+      "bleed_dps": 0,
+      "crit_chance": 0.2,
+      "evolutions": [
+        "hunter",
+        "beastmaster"
+      ],
+      "id": "archer",
+      "key": 2,
+      "max_hp": 88,
+      "name": "ARCHER GOBLIN",
+      "poison_dps": 6,
+      "ranged": true,
+      "role": "Ranged hunter",
+      "speed": 236.0,
+      "summary": "Bows, traps, poison arrows, stealth, kiting",
+      "tint": {
+        "_type": "Color",
+        "a": 1.0,
+        "b": 0.860000014305115,
+        "g": 1.04999995231628,
+        "r": 0.879999995231628
+      },
+      "special_id": "special_archer"
+    },
+    {
+      "armor": 0.0,
+      "attack_cooldown": 0.38,
+      "attack_range": 84.0,
+      "base_damage": 25,
+      "bleed_dps": 6,
+      "crit_chance": 0.22,
+      "evolutions": [
+        "assassin",
+        "berserker"
+      ],
+      "id": "blade",
+      "key": 1,
+      "max_hp": 100,
+      "name": "BLADE GOBLIN",
+      "poison_dps": 0,
+      "ranged": false,
+      "role": "Fast melee striker",
+      "speed": 220.0,
+      "summary": "Dual blades, crits, bleed, dodge, mobility",
+      "tint": {
+        "_type": "Color",
+        "a": 1.0,
+        "b": 1.0,
+        "g": 1.0,
+        "r": 1.0
+      },
+      "special_id": "special_blade"
+    },
+    {
+      "armor": 0.25,
+      "attack_cooldown": 0.45,
+      "attack_range": 90.0,
+      "base_damage": 28,
+      "bleed_dps": 3,
+      "crit_chance": 0.12,
+      "evolutions": [
+        "warlord",
+        "guardian"
+      ],
+      "id": "knight",
+      "key": 3,
+      "max_hp": 140,
+      "name": "KNIGHT GOBLIN",
+      "poison_dps": 0,
+      "ranged": false,
+      "role": "Front-line tank",
+      "speed": 192.0,
+      "summary": "Shielding, armor, taunts, blocks, stuns, ally protection",
+      "tint": {
+        "_type": "Color",
+        "a": 1.0,
+        "b": 1.05999994277954,
+        "g": 0.959999978542328,
+        "r": 0.949999988079071
+      },
+      "special_id": "special_knight"
+    },
+    {
+      "armor": 0.05,
+      "attack_cooldown": 0.48,
+      "attack_range": 350.0,
+      "base_damage": 32,
+      "bleed_dps": 0,
+      "crit_chance": 0.18,
+      "evolutions": [
+        "shaman",
+        "warlock",
+        "necromancer"
+      ],
+      "id": "mage",
+      "key": 4,
+      "max_hp": 82,
+      "name": "MAGE GOBLIN",
+      "poison_dps": 7,
+      "ranged": true,
+      "role": "Fragile spellcaster",
+      "speed": 208.0,
+      "summary": "Fire, poison, curses, crowd control, burst damage",
+      "tint": {
+        "_type": "Color",
+        "a": 1.0,
+        "b": 1.08000004291534,
+        "g": 0.860000014305115,
+        "r": 1.03999996185303
+      },
+      "special_id": "special_mage"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "class": "mage",
+      "evolution": "shaman",
+      "greeting": "Back in one piece? Good. The den is safe. Rest, sort your pack, and leave when you're ready.",
+      "id": "den_keeper",
+      "name": "Moss — Den Keeper",
+      "point": {
+        "_type": "Vector2",
+        "x": 550.0,
+        "y": 300.0
+      },
+      "room": 0,
+      "rumor": "Bramble Market is through the forest. Keep your valuables in its depot and spare supplies in our chest.",
+      "service": "rest"
+    },
+    {
+      "class": "blade",
+      "greeting": "Welcome to Bramble Market. Your depot is yours alone. Nothing you leave here drops when you fall out there.",
+      "id": "depot_keeper",
+      "name": "Nib — Depot Keeper",
+      "point": {
+        "_type": "Vector2",
+        "x": 350.0,
+        "y": 345.0
+      },
+      "room": 10,
+      "rumor": "The depot and your den chest are separate. Pack a spare weapon before chasing a lost corpse.",
+      "service": "depot"
+    },
+    {
+      "class": "knight",
+      "greeting": "A good edge beats a brave speech. Bring bog iron and thornwood, or see what I've got for sale.",
+      "id": "blacksmith",
+      "name": "Gruk — Blacksmith",
+      "point": {
+        "_type": "Vector2",
+        "x": 550.0,
+        "y": 345.0
+      },
+      "room": 10,
+      "rumor": "Two-handed weapons need both hands. Make room for your shield before swapping, and watch the level requirements.",
+      "service": "merchant"
+    },
+    {
+      "class": "mage",
+      "greeting": "A spell learned is a spell kept. I can teach you healing, fire, and a few tricks for a dangerous road.",
+      "id": "spell_trainer",
+      "name": "Vexa — Spellkeeper",
+      "point": {
+        "_type": "Vector2",
+        "x": 750.0,
+        "y": 345.0
+      },
+      "room": 10,
+      "rumor": "Bind learned actions to your hotbar. Automatic targeting finds a nearby enemy; manual aiming casts toward your cursor.",
+      "service": "trainer"
+    },
+    {
+      "class": "archer",
+      "greeting": "Heading out? Don't trust an empty potion pouch. Eight scrap refills your supplies.",
+      "id": "supply_vendor",
+      "name": "Pip — Provisioner",
+      "point": {
+        "_type": "Vector2",
+        "x": 880.0,
+        "y": 460.0
+      },
+      "room": 10,
+      "rumor": "Glowleaf helps injured travelers. If your pack fills up, extra finds stay in a ground bag—pick them up before it expires.",
+      "service": "supplies"
+    },
+    {
+      "class": "knight",
+      "evolution": "guardian",
+      "greeting": "We need the nearby paths watched. Defeat five enemies and I'll pay you for the trouble. Take it at your own pace.",
+      "id": "scout_captain",
+      "name": "Rusk — Scout Captain",
+      "point": {
+        "_type": "Vector2",
+        "x": 550.0,
+        "y": 515.0
+      },
+      "room": 10,
+      "rumor": "Mirewood Bog lies southeast of the forest. Beyond Frostroot, a sealed dungeon descends three floors. Investigate its wards and bring back what you find. Turn back whenever supplies run low.",
+      "service": "quest"
+    },
+    {
+      "class": "archer",
+      "evolution": "hunter",
+      "greeting": "First time outside? The market trail is just north of me. The home trail is east. The bog is farther southeast.",
+      "id": "forest_guide",
+      "name": "Tikk — Trail Guide",
+      "point": {
+        "_type": "Vector2",
+        "x": 440.0,
+        "y": 440.0
+      },
+      "room": 6,
+      "rumor": "The forest is the gentler route. Take time to gather wood and fish. Look for travelers, but watch for wandering patrols.",
+      "service": "guide"
+    }
+  ]
+}

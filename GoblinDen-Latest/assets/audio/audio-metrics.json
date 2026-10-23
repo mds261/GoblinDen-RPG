@@ -1,0 +1,116 @@
+{
+  "hit": {
+    "duration": 0.20997732426303856,
+    "peak": 0.52,
+    "rms": 0.09678975715630146,
+    "loop_boundary_delta": 3.0802334775501504e-07
+  },
+  "hurt": {
+    "duration": 0.32,
+    "peak": 0.52,
+    "rms": 0.08755930875420784,
+    "loop_boundary_delta": 6.829327376689531e-07
+  },
+  "swing": {
+    "duration": 0.28,
+    "peak": 0.52,
+    "rms": 0.09450874008412932,
+    "loop_boundary_delta": 1.060015892336702e-10
+  },
+  "dodge": {
+    "duration": 0.3,
+    "peak": 0.52,
+    "rms": 0.11535484640394238,
+    "loop_boundary_delta": 1.0349906695572564e-12
+  },
+  "interact": {
+    "duration": 0.24997732426303854,
+    "peak": 0.38,
+    "rms": 0.07182115673595643,
+    "loop_boundary_delta": 1.758773746468568e-07
+  },
+  "bow": {
+    "duration": 0.28,
+    "peak": 0.52,
+    "rms": 0.09745762569030748,
+    "loop_boundary_delta": 3.2188832913915624e-07
+  },
+  "magic": {
+    "duration": 0.6499773242630386,
+    "peak": 0.38,
+    "rms": 0.05626110954533127,
+    "loop_boundary_delta": 1.4238842310082545e-11
+  },
+  "loot": {
+    "duration": 0.42997732426303853,
+    "peak": 0.38,
+    "rms": 0.054548688362587625,
+    "loop_boundary_delta": 6.521242827206911e-09
+  },
+  "coin": {
+    "duration": 0.38,
+    "peak": 0.38,
+    "rms": 0.05926175625914115,
+    "loop_boundary_delta": 1.0500363629615565e-09
+  },
+  "potion": {
+    "duration": 0.6499773242630386,
+    "peak": 0.38,
+    "rms": 0.08347957991848856,
+    "loop_boundary_delta": 1.1006540204618921e-07
+  },
+  "death": {
+    "duration": 0.6499773242630386,
+    "peak": 0.52,
+    "rms": 0.09149406370407562,
+    "loop_boundary_delta": 5.491086375933145e-06
+  },
+  "level_up": {
+    "duration": 1.7,
+    "peak": 0.38,
+    "rms": 0.08810120970824736,
+    "loop_boundary_delta": 0.0
+  },
+  "stairs": {
+    "duration": 0.52,
+    "peak": 0.52,
+    "rms": 0.09034324950416048,
+    "loop_boundary_delta": 2.2593728751579487e-07
+  },
+  "boss": {
+    "duration": 1.0,
+    "peak": 0.52,
+    "rms": 0.2098948533105824,
+    "loop_boundary_delta": 3.367747354746445e-05
+  },
+  "step_stone": {
+    "duration": 0.12,
+    "peak": 0.42000000000000004,
+    "rms": 0.06319377635455425,
+    "loop_boundary_delta": 3.556884320098097e-07
+  },
+  "step_grass": {
+    "duration": 0.14,
+    "peak": 0.42000000000000004,
+    "rms": 0.08150489733391374,
+    "loop_boundary_delta": 2.1201575020196595e-06
+  },
+  "music_haven": {
+    "duration": 75.78947845804989,
+    "peak": 0.6199951171875,
+    "rms": 0.14035598460786386,
+    "loop_boundary_delta": 0.0028076171875
+  },
+  "music_woodland": {
+    "duration": 80.0,
+    "peak": 0.6199951171875,
+    "rms": 0.12372697465306806,
+    "loop_boundary_delta": 0.007965087890625
+  },
+  "music_descent": {
+    "duration": 80.0,
+    "peak": 0.6199951171875,
+    "rms": 0.14127676981802975,
+    "loop_boundary_delta": 0.00836181640625
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "cost": 4,
+      "damage": 17,
+      "id": "goblin_blade",
+      "max_hp": 95,
+      "name": "BLADE GOBLIN",
+      "range": 72.0,
+      "role": "blade",
+      "speed": 225.0,
+      "summary": "Fast melee flanker who slips past shields to cut down the human backline"
+    },
+    {
+      "cost": 4,
+      "damage": 14,
+      "id": "goblin_archer",
+      "max_hp": 75,
+      "name": "ARCHER GOBLIN",
+      "range": 310.0,
+      "role": "archer",
+      "speed": 200.0,
+      "summary": "Peppers human healers & mages with poisoned arrows from behind cover"
+    },
+    {
+      "cost": 5,
+      "damage": 19,
+      "id": "goblin_knight",
+      "max_hp": 135,
+      "name": "KNIGHT GOBLIN",
+      "range": 82.0,
+      "role": "knight",
+      "speed": 188.0,
+      "summary": "Armored front-liner who pins enemies down behind a scavenged iron shield"
+    },
+    {
+      "cost": 5,
+      "damage": 21,
+      "id": "goblin_mage",
+      "max_hp": 78,
+      "name": "MAGE GOBLIN",
+      "range": 300.0,
+      "role": "mage",
+      "speed": 204.0,
+      "summary": "Fragile spellcaster who hurls explosive hex bolts into clustered raiders"
+    }
+  ]
+}

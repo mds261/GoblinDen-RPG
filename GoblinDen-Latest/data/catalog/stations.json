@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "cell": 0,
+      "pos": {
+        "_type": "Vector2",
+        "x": 350.0,
+        "y": 350.0
+      },
+      "room": 8,
+      "name": "FORGE",
+      "id": "station_0"
+    },
+    {
+      "cell": 1,
+      "pos": {
+        "_type": "Vector2",
+        "x": 410.0,
+        "y": 350.0
+      },
+      "room": 0,
+      "name": "REST",
+      "id": "station_1"
+    },
+    {
+      "cell": 2,
+      "pos": {
+        "_type": "Vector2",
+        "x": 350.0,
+        "y": 350.0
+      },
+      "room": 9,
+      "name": "TRAINING",
+      "id": "station_2"
+    },
+    {
+      "cell": 3,
+      "pos": {
+        "_type": "Vector2",
+        "x": 760.0,
+        "y": 350.0
+      },
+      "room": 8,
+      "name": "ARCHERY/TRAPS",
+      "id": "station_3"
+    },
+    {
+      "cell": 4,
+      "pos": {
+        "_type": "Vector2",
+        "x": 750.0,
+        "y": 350.0
+      },
+      "room": 0,
+      "name": "SHAMAN HUT",
+      "id": "station_4"
+    },
+    {
+      "cell": 5,
+      "pos": {
+        "_type": "Vector2",
+        "x": 800.0,
+        "y": 350.0
+      },
+      "room": 9,
+      "name": "RECRUIT PARTY",
+      "id": "station_5"
+    },
+    {
+      "cell": 6,
+      "pos": {
+        "_type": "Vector2",
+        "x": 575.0,
+        "y": 350.0
+      },
+      "room": 7,
+      "name": "TREASURE/LOOT",
+      "id": "station_6"
+    },
+    {
+      "cell": 7,
+      "pos": {
+        "_type": "Vector2",
+        "x": 575.0,
+        "y": 430.0
+      },
+      "room": 9,
+      "name": "WAR TABLE",
+      "id": "station_7"
+    }
+  ]
+}

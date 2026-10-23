@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "name": "Den chest",
+      "id": "den_chest"
+    },
+    {
+      "name": "Forest trail",
+      "id": "forest_trail"
+    },
+    {
+      "name": "Trading settlement",
+      "id": "trading_settlement"
+    },
+    {
+      "name": "Home trail",
+      "id": "home_trail"
+    },
+    {
+      "name": "Bog trail: Tier 2",
+      "id": "bog_trail_tier_2"
+    },
+    {
+      "name": "Gather wood",
+      "id": "gather_wood"
+    },
+    {
+      "name": "Riverbank",
+      "id": "riverbank"
+    },
+    {
+      "name": "Personal depot",
+      "id": "personal_depot"
+    },
+    {
+      "name": "Merchant / Smith",
+      "id": "merchant_smith"
+    },
+    {
+      "name": "Spell trainer",
+      "id": "spell_trainer"
+    },
+    {
+      "name": "Quest board",
+      "id": "quest_board"
+    },
+    {
+      "name": "Deep cave: Tier 3",
+      "id": "deep_cave_tier_3"
+    },
+    {
+      "name": "Mine bog iron",
+      "id": "mine_bog_iron"
+    },
+    {
+      "name": "Bog trail",
+      "id": "bog_trail"
+    },
+    {
+      "name": "Mine cave ore",
+      "id": "mine_cave_ore"
+    },
+    {
+      "name": "Open den chest",
+      "id": "open_den_chest"
+    },
+    {
+      "name": "Follow the forest trail",
+      "id": "follow_the_forest_trail"
+    },
+    {
+      "name": "Enter Bramble Market",
+      "id": "enter_bramble_market"
+    },
+    {
+      "name": "Return to the den",
+      "id": "return_to_the_den"
+    },
+    {
+      "name": "Enter Mirewood Bog",
+      "id": "enter_mirewood_bog"
+    },
+    {
+      "name": "Enter Frostroot Cave",
+      "id": "enter_frostroot_cave"
+    },
+    {
+      "name": "Return to the forest",
+      "id": "return_to_the_forest"
+    },
+    {
+      "name": "Return to Mirewood Bog",
+      "id": "return_to_mirewood_bog"
+    },
+    {
+      "name": "Fish at riverbank",
+      "id": "fish_at_riverbank"
+    },
+    {
+      "name": "Stairs up",
+      "id": "stairs_up"
+    },
+    {
+      "name": "Stairs down",
+      "id": "stairs_down"
+    },
+    {
+      "name": "Ward seal",
+      "id": "ward_seal"
+    },
+    {
+      "name": "Side vault",
+      "id": "side_vault"
+    },
+    {
+      "name": "Final reliquary",
+      "id": "final_reliquary"
+    },
+    {
+      "name": "Scrap",
+      "id": "scrap"
+    },
+    {
+      "name": "Potion",
+      "id": "potion"
+    },
+    {
+      "name": "Backpack",
+      "id": "backpack"
+    },
+    {
+      "name": "Chest",
+      "id": "chest"
+    },
+    {
+      "name": "Scroll",
+      "id": "scroll"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "name": "Wandering Trader",
+      "id": "Wandering merchant"
+    },
+    {
+      "name": "Wounded Scout",
+      "id": "Injured traveler"
+    },
+    {
+      "name": "Treasure Hunter",
+      "id": "Treasure hunter"
+    }
+  ]
+}

@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "chokepoints": false,
+      "index": 0,
+      "room_1": [
+        {
+          "enemy_id": "campaign_0_1_0_scout",
+          "pos": {
+            "_type": "Vector2",
+            "x": 640.0,
+            "y": 340.0
+          }
+        },
+        {
+          "enemy_id": "campaign_0_1_1_guard",
+          "pos": {
+            "_type": "Vector2",
+            "x": 880.0,
+            "y": 445.0
+          }
+        }
+      ],
+      "room_2": [
+        {
+          "enemy_id": "campaign_0_2_0_iron_captain",
+          "pos": {
+            "_type": "Vector2",
+            "x": 760.0,
+            "y": 360.0
+          }
+        }
+      ],
+      "subtitle": "Border militia and the Iron Captain have broken into the outer tunnels.",
+      "name": "TIER 1 (LV 1-5): THE BREACH INCURSION",
+      "id": "campaign_0"
+    },
+    {
+      "chokepoints": true,
+      "index": 1,
+      "room_1": [
+        {
+          "enemy_id": "campaign_1_1_0_guild_warrior",
+          "pos": {
+            "_type": "Vector2",
+            "x": 600.0,
+            "y": 330.0
+          }
+        },
+        {
+          "enemy_id": "campaign_1_1_1_woodland_ranger",
+          "pos": {
+            "_type": "Vector2",
+            "x": 830.0,
+            "y": 250.0
+          }
+        },
+        {
+          "enemy_id": "campaign_1_1_2_novice_priest",
+          "pos": {
+            "_type": "Vector2",
+            "x": 890.0,
+            "y": 460.0
+          }
+        }
+      ],
+      "room_2": [
+        {
+          "enemy_id": "campaign_1_2_0_shield_vanguard",
+          "pos": {
+            "_type": "Vector2",
+            "x": 650.0,
+            "y": 360.0
+          }
+        },
+        {
+          "enemy_id": "campaign_1_2_1_guild_pyromancer",
+          "pos": {
+            "_type": "Vector2",
+            "x": 870.0,
+            "y": 300.0
+          }
+        },
+        {
+          "enemy_id": "campaign_1_2_2_shrine_cleric",
+          "pos": {
+            "_type": "Vector2",
+            "x": 890.0,
+            "y": 455.0
+          }
+        }
+      ],
+      "subtitle": "Warriors, ranged archers, and a healing priest coordinate their advance.",
+      "name": "TIER 2 (LV 5-15): GUILD SCOUTING PARTY",
+      "id": "campaign_1"
+    },
+    {
+      "chokepoints": true,
+      "index": 2,
+      "room_1": [
+        {
+          "enemy_id": "campaign_2_1_0_veteran_knight",
+          "pos": {
+            "_type": "Vector2",
+            "x": 580.0,
+            "y": 360.0
+          }
+        },
+        {
+          "enemy_id": "campaign_2_1_1_trapfinder_rogue",
+          "pos": {
+            "_type": "Vector2",
+            "x": 730.0,
+            "y": 220.0
+          }
+        },
+        {
+          "enemy_id": "campaign_2_1_2_crossbow_arbalest",
+          "pos": {
+            "_type": "Vector2",
+            "x": 890.0,
+            "y": 330.0
+          }
+        },
+        {
+          "enemy_id": "campaign_2_1_3_abbey_priest",
+          "pos": {
+            "_type": "Vector2",
+            "x": 910.0,
+            "y": 480.0
+          }
+        }
+      ],
+      "room_2": [
+        {
+          "enemy_id": "campaign_2_2_0_huntmaster_vane",
+          "pos": {
+            "_type": "Vector2",
+            "x": 690.0,
+            "y": 360.0
+          }
+        },
+        {
+          "enemy_id": "campaign_2_2_1_arcane_inquisitor",
+          "pos": {
+            "_type": "Vector2",
+            "x": 880.0,
+            "y": 250.0
+          }
+        },
+        {
+          "enemy_id": "campaign_2_2_2_high_confessor",
+          "pos": {
+            "_type": "Vector2",
+            "x": 880.0,
+            "y": 470.0
+          }
+        }
+      ],
+      "subtitle": "Trap-hunting rogues, veteran knights, and monster-slaying specialists.",
+      "name": "TIER 3 (LV 15-30): VETERAN MONSTER HUNTERS",
+      "id": "campaign_2"
+    },
+    {
+      "chokepoints": true,
+      "index": 3,
+      "room_1": [
+        {
+          "enemy_id": "campaign_3_1_0_royal_templar",
+          "pos": {
+            "_type": "Vector2",
+            "x": 580.0,
+            "y": 280.0
+          }
+        },
+        {
+          "enemy_id": "campaign_3_1_1_crown_guardian",
+          "pos": {
+            "_type": "Vector2",
+            "x": 610.0,
+            "y": 450.0
+          }
+        },
+        {
+          "enemy_id": "campaign_3_1_2_court_archmage",
+          "pos": {
+            "_type": "Vector2",
+            "x": 860.0,
+            "y": 250.0
+          }
+        },
+        {
+          "enemy_id": "campaign_3_1_3_sun_bishop",
+          "pos": {
+            "_type": "Vector2",
+            "x": 900.0,
+            "y": 460.0
+          }
+        }
+      ],
+      "room_2": [
+        {
+          "enemy_id": "campaign_3_2_0_grand_paladin_aurelius",
+          "pos": {
+            "_type": "Vector2",
+            "x": 680.0,
+            "y": 360.0
+          }
+        },
+        {
+          "enemy_id": "campaign_3_2_1_royal_longbowman",
+          "pos": {
+            "_type": "Vector2",
+            "x": 860.0,
+            "y": 240.0
+          }
+        },
+        {
+          "enemy_id": "campaign_3_2_2_cathedral_oracle",
+          "pos": {
+            "_type": "Vector2",
+            "x": 890.0,
+            "y": 480.0
+          }
+        }
+      ],
+      "subtitle": "Royal knights, court mages, and a Grand Paladin sent by the Crown.",
+      "name": "TIER 4 (LV 30+): ROYAL PALADIN CRUSADE",
+      "id": "campaign_3"
+    },
+    {
+      "chokepoints": true,
+      "index": 4,
+      "room_1": [
+        {
+          "enemy_id": "campaign_4_1_0_champion_vanguard",
+          "pos": {
+            "_type": "Vector2",
+            "x": 560.0,
+            "y": 340.0
+          }
+        },
+        {
+          "enemy_id": "campaign_4_1_1_nightblade_assassin",
+          "pos": {
+            "_type": "Vector2",
+            "x": 720.0,
+            "y": 210.0
+          }
+        },
+        {
+          "enemy_id": "campaign_4_1_2_arch_sorceress",
+          "pos": {
+            "_type": "Vector2",
+            "x": 870.0,
+            "y": 290.0
+          }
+        },
+        {
+          "enemy_id": "campaign_4_1_3_saint_of_light",
+          "pos": {
+            "_type": "Vector2",
+            "x": 910.0,
+            "y": 470.0
+          }
+        }
+      ],
+      "room_2": [
+        {
+          "enemy_id": "campaign_4_2_0_the_dawn_hero",
+          "pos": {
+            "_type": "Vector2",
+            "x": 650.0,
+            "y": 360.0
+          }
+        },
+        {
+          "enemy_id": "campaign_4_2_1_hero_s_shield_sworn",
+          "pos": {
+            "_type": "Vector2",
+            "x": 580.0,
+            "y": 230.0
+          }
+        },
+        {
+          "enemy_id": "campaign_4_2_2_hero_s_shadow",
+          "pos": {
+            "_type": "Vector2",
+            "x": 790.0,
+            "y": 215.0
+          }
+        },
+        {
+          "enemy_id": "campaign_4_2_3_hero_s_deadeye",
+          "pos": {
+            "_type": "Vector2",
+            "x": 880.0,
+            "y": 340.0
+          }
+        },
+        {
+          "enemy_id": "campaign_4_2_4_hero_s_high_saint",
+          "pos": {
+            "_type": "Vector2",
+            "x": 890.0,
+            "y": 495.0
+          }
+        }
+      ],
+      "subtitle": "The realm's undefeated Hero Party descends to finish your goblin tribe.",
+      "name": "ENDGAME: LEGENDARY HERO PARTY",
+      "id": "campaign_4"
+    }
+  ]
+}

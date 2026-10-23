@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "name": "Sword Fighting",
+      "id": "Sword Fighting"
+    },
+    {
+      "name": "Axe Fighting",
+      "id": "Axe Fighting"
+    },
+    {
+      "name": "Club Fighting",
+      "id": "Club Fighting"
+    },
+    {
+      "name": "Distance Fighting",
+      "id": "Distance Fighting"
+    },
+    {
+      "name": "Magic",
+      "id": "Magic"
+    },
+    {
+      "name": "Shielding",
+      "id": "Shielding"
+    },
+    {
+      "name": "Mining",
+      "id": "Mining"
+    },
+    {
+      "name": "Woodcutting",
+      "id": "Woodcutting"
+    },
+    {
+      "name": "Fishing",
+      "id": "Fishing"
+    },
+    {
+      "name": "Crafting",
+      "id": "Crafting"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "name": "Sealed Descent",
+      "reward_scrap": 80,
+      "reward_xp": 250,
+      "id": "sealed_descent"
+    },
+    {
+      "name": "Scout Contract",
+      "kill_target": 5,
+      "reward_scrap": 40,
+      "reward_xp": 100,
+      "id": "bounty"
+    }
+  ]
+}

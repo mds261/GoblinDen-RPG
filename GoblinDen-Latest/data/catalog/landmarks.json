@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "id": "fallen_arch",
+      "name": "Fallen-Root Arch",
+      "pos": {
+        "_type": "Vector2",
+        "x": 410.0,
+        "y": 925.0
+      }
+    },
+    {
+      "id": "watch_shrine",
+      "name": "Old Watch Shrine",
+      "pos": {
+        "_type": "Vector2",
+        "x": 950.0,
+        "y": 795.0
+      }
+    },
+    {
+      "id": "hunter_camp",
+      "name": "Abandoned Hunter Camp",
+      "pos": {
+        "_type": "Vector2",
+        "x": 1535.0,
+        "y": 510.0
+      }
+    },
+    {
+      "id": "stream_ford",
+      "name": "Whispering Stream Ford",
+      "pos": {
+        "_type": "Vector2",
+        "x": 1715.0,
+        "y": 850.0
+      }
+    },
+    {
+      "id": "high_overlook",
+      "name": "Thornwood High Overlook",
+      "pos": {
+        "_type": "Vector2",
+        "x": 2035.0,
+        "y": 510.0
+      }
+    }
+  ]
+}

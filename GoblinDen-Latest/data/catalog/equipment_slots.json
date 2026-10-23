@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "name": "Necklace",
+      "id": "necklace"
+    },
+    {
+      "name": "Helmet",
+      "id": "helmet"
+    },
+    {
+      "name": "Weapon",
+      "id": "weapon"
+    },
+    {
+      "name": "Shield",
+      "id": "shield"
+    },
+    {
+      "name": "Armor",
+      "id": "armor"
+    },
+    {
+      "name": "Legs",
+      "id": "legs"
+    },
+    {
+      "name": "Boots",
+      "id": "boots"
+    },
+    {
+      "name": "Ring",
+      "id": "ring"
+    }
+  ]
+}

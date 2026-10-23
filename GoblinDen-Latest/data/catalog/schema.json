@@ -1,0 +1,1870 @@
+{
+  "campaigns": {
+    "campaign_0": {
+      "chokepoints": "bool",
+      "index": "number",
+      "room_1": "array",
+      "room_2": "array",
+      "subtitle": "string",
+      "name": "string",
+      "id": "string"
+    },
+    "campaign_1": {
+      "chokepoints": "bool",
+      "index": "number",
+      "room_1": "array",
+      "room_2": "array",
+      "subtitle": "string",
+      "name": "string",
+      "id": "string"
+    },
+    "campaign_2": {
+      "chokepoints": "bool",
+      "index": "number",
+      "room_1": "array",
+      "room_2": "array",
+      "subtitle": "string",
+      "name": "string",
+      "id": "string"
+    },
+    "campaign_3": {
+      "chokepoints": "bool",
+      "index": "number",
+      "room_1": "array",
+      "room_2": "array",
+      "subtitle": "string",
+      "name": "string",
+      "id": "string"
+    },
+    "campaign_4": {
+      "chokepoints": "bool",
+      "index": "number",
+      "room_1": "array",
+      "room_2": "array",
+      "subtitle": "string",
+      "name": "string",
+      "id": "string"
+    }
+  },
+  "evolutions": {
+    "assassin": {
+      "armor_bonus": "number",
+      "aura_color": "object",
+      "base_class": "string",
+      "crit_bonus": "number",
+      "damage_bonus": "number",
+      "hp_bonus": "number",
+      "id": "string",
+      "name": "string",
+      "speed_bonus": "number",
+      "summary": "string",
+      "special_id": "string"
+    },
+    "beastmaster": {
+      "armor_bonus": "number",
+      "aura_color": "object",
+      "base_class": "string",
+      "crit_bonus": "number",
+      "damage_bonus": "number",
+      "hp_bonus": "number",
+      "id": "string",
+      "name": "string",
+      "speed_bonus": "number",
+      "summary": "string",
+      "special_id": "string"
+    },
+    "berserker": {
+      "armor_bonus": "number",
+      "aura_color": "object",
+      "base_class": "string",
+      "crit_bonus": "number",
+      "damage_bonus": "number",
+      "hp_bonus": "number",
+      "id": "string",
+      "name": "string",
+      "speed_bonus": "number",
+      "summary": "string",
+      "special_id": "string"
+    },
+    "guardian": {
+      "armor_bonus": "number",
+      "aura_color": "object",
+      "base_class": "string",
+      "crit_bonus": "number",
+      "damage_bonus": "number",
+      "hp_bonus": "number",
+      "id": "string",
+      "name": "string",
+      "speed_bonus": "number",
+      "summary": "string",
+      "special_id": "string"
+    },
+    "hunter": {
+      "armor_bonus": "number",
+      "aura_color": "object",
+      "base_class": "string",
+      "crit_bonus": "number",
+      "damage_bonus": "number",
+      "hp_bonus": "number",
+      "id": "string",
+      "name": "string",
+      "speed_bonus": "number",
+      "summary": "string",
+      "special_id": "string"
+    },
+    "necromancer": {
+      "armor_bonus": "number",
+      "aura_color": "object",
+      "base_class": "string",
+      "crit_bonus": "number",
+      "damage_bonus": "number",
+      "hp_bonus": "number",
+      "id": "string",
+      "name": "string",
+      "speed_bonus": "number",
+      "summary": "string",
+      "special_id": "string"
+    },
+    "shaman": {
+      "armor_bonus": "number",
+      "aura_color": "object",
+      "base_class": "string",
+      "crit_bonus": "number",
+      "damage_bonus": "number",
+      "hp_bonus": "number",
+      "id": "string",
+      "name": "string",
+      "speed_bonus": "number",
+      "summary": "string",
+      "special_id": "string"
+    },
+    "warlock": {
+      "armor_bonus": "number",
+      "aura_color": "object",
+      "base_class": "string",
+      "crit_bonus": "number",
+      "damage_bonus": "number",
+      "hp_bonus": "number",
+      "id": "string",
+      "name": "string",
+      "speed_bonus": "number",
+      "summary": "string",
+      "special_id": "string"
+    },
+    "warlord": {
+      "armor_bonus": "number",
+      "aura_color": "object",
+      "base_class": "string",
+      "crit_bonus": "number",
+      "damage_bonus": "number",
+      "hp_bonus": "number",
+      "id": "string",
+      "name": "string",
+      "speed_bonus": "number",
+      "summary": "string",
+      "special_id": "string"
+    }
+  },
+  "attributes": {
+    "Dexterity": {
+      "name": "string",
+      "starting_value": "number",
+      "id": "string"
+    },
+    "Intelligence": {
+      "name": "string",
+      "starting_value": "number",
+      "id": "string"
+    },
+    "Strength": {
+      "name": "string",
+      "starting_value": "number",
+      "id": "string"
+    },
+    "Vitality": {
+      "name": "string",
+      "starting_value": "number",
+      "id": "string"
+    },
+    "Willpower": {
+      "name": "string",
+      "starting_value": "number",
+      "id": "string"
+    }
+  },
+  "companions": {
+    "goblin_blade": {
+      "cost": "number",
+      "damage": "number",
+      "id": "string",
+      "max_hp": "number",
+      "name": "string",
+      "range": "number",
+      "role": "string",
+      "speed": "number",
+      "summary": "string"
+    },
+    "goblin_archer": {
+      "cost": "number",
+      "damage": "number",
+      "id": "string",
+      "max_hp": "number",
+      "name": "string",
+      "range": "number",
+      "role": "string",
+      "speed": "number",
+      "summary": "string"
+    },
+    "goblin_knight": {
+      "cost": "number",
+      "damage": "number",
+      "id": "string",
+      "max_hp": "number",
+      "name": "string",
+      "range": "number",
+      "role": "string",
+      "speed": "number",
+      "summary": "string"
+    },
+    "goblin_mage": {
+      "cost": "number",
+      "damage": "number",
+      "id": "string",
+      "max_hp": "number",
+      "name": "string",
+      "range": "number",
+      "role": "string",
+      "speed": "number",
+      "summary": "string"
+    }
+  },
+  "npcs": {
+    "den_keeper": {
+      "class": "string",
+      "evolution": "string",
+      "greeting": "string",
+      "id": "string",
+      "name": "string",
+      "point": "object",
+      "room": "number",
+      "rumor": "string",
+      "service": "string"
+    },
+    "depot_keeper": {
+      "class": "string",
+      "greeting": "string",
+      "id": "string",
+      "name": "string",
+      "point": "object",
+      "room": "number",
+      "rumor": "string",
+      "service": "string"
+    },
+    "blacksmith": {
+      "class": "string",
+      "greeting": "string",
+      "id": "string",
+      "name": "string",
+      "point": "object",
+      "room": "number",
+      "rumor": "string",
+      "service": "string"
+    },
+    "spell_trainer": {
+      "class": "string",
+      "greeting": "string",
+      "id": "string",
+      "name": "string",
+      "point": "object",
+      "room": "number",
+      "rumor": "string",
+      "service": "string"
+    },
+    "supply_vendor": {
+      "class": "string",
+      "greeting": "string",
+      "id": "string",
+      "name": "string",
+      "point": "object",
+      "room": "number",
+      "rumor": "string",
+      "service": "string"
+    },
+    "scout_captain": {
+      "class": "string",
+      "evolution": "string",
+      "greeting": "string",
+      "id": "string",
+      "name": "string",
+      "point": "object",
+      "room": "number",
+      "rumor": "string",
+      "service": "string"
+    },
+    "forest_guide": {
+      "class": "string",
+      "evolution": "string",
+      "greeting": "string",
+      "id": "string",
+      "name": "string",
+      "point": "object",
+      "room": "number",
+      "rumor": "string",
+      "service": "string"
+    }
+  },
+  "summons": {
+    "cave_wolf": {
+      "name": "string",
+      "role": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "attack_range": "number",
+      "id": "string"
+    },
+    "risen_skeleton": {
+      "name": "string",
+      "role": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "attack_range": "number",
+      "id": "string"
+    }
+  },
+  "skills": {
+    "Sword Fighting": {
+      "name": "string",
+      "id": "string"
+    },
+    "Axe Fighting": {
+      "name": "string",
+      "id": "string"
+    },
+    "Club Fighting": {
+      "name": "string",
+      "id": "string"
+    },
+    "Distance Fighting": {
+      "name": "string",
+      "id": "string"
+    },
+    "Magic": {
+      "name": "string",
+      "id": "string"
+    },
+    "Shielding": {
+      "name": "string",
+      "id": "string"
+    },
+    "Mining": {
+      "name": "string",
+      "id": "string"
+    },
+    "Woodcutting": {
+      "name": "string",
+      "id": "string"
+    },
+    "Fishing": {
+      "name": "string",
+      "id": "string"
+    },
+    "Crafting": {
+      "name": "string",
+      "id": "string"
+    }
+  },
+  "landmarks": {
+    "fallen_arch": {
+      "id": "string",
+      "name": "string",
+      "pos": "object"
+    },
+    "watch_shrine": {
+      "id": "string",
+      "name": "string",
+      "pos": "object"
+    },
+    "hunter_camp": {
+      "id": "string",
+      "name": "string",
+      "pos": "object"
+    },
+    "stream_ford": {
+      "id": "string",
+      "name": "string",
+      "pos": "object"
+    },
+    "high_overlook": {
+      "id": "string",
+      "name": "string",
+      "pos": "object"
+    }
+  },
+  "monsters": {
+    "campaign_0_1_0_scout": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_0_1_1_guard": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_0_2_0_iron_captain": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_1_1_0_guild_warrior": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_1_1_1_woodland_ranger": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_1_1_2_novice_priest": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_1_2_0_shield_vanguard": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_1_2_1_guild_pyromancer": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_1_2_2_shrine_cleric": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_2_1_0_veteran_knight": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_2_1_1_trapfinder_rogue": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_2_1_2_crossbow_arbalest": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_2_1_3_abbey_priest": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_2_2_0_huntmaster_vane": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_2_2_1_arcane_inquisitor": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_2_2_2_high_confessor": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_3_1_0_royal_templar": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_3_1_1_crown_guardian": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_3_1_2_court_archmage": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_3_1_3_sun_bishop": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_3_2_0_grand_paladin_aurelius": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_3_2_1_royal_longbowman": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_3_2_2_cathedral_oracle": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_4_1_0_champion_vanguard": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_4_1_1_nightblade_assassin": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_4_1_2_arch_sorceress": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_4_1_3_saint_of_light": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_4_2_0_the_dawn_hero": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_4_2_1_hero_s_shield_sworn": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_4_2_2_hero_s_shadow": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_4_2_3_hero_s_deadeye": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "campaign_4_2_4_hero_s_high_saint": {
+      "damage": "number",
+      "hp": "number",
+      "loot": "string",
+      "name": "string",
+      "role": "string",
+      "scrap": "number",
+      "speed": "number",
+      "xp": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "ogre": {
+      "art_size": "number",
+      "attack_radius": "number",
+      "cooldown_length": "number",
+      "damage": "number",
+      "max_windup": "number",
+      "speed": "number",
+      "name": "string",
+      "hp": "number",
+      "scrap": "number",
+      "xp": "number",
+      "kind": "string",
+      "loot": "string",
+      "id": "string"
+    },
+    "spider": {
+      "art_size": "number",
+      "attack_radius": "number",
+      "cooldown_length": "number",
+      "damage": "number",
+      "max_windup": "number",
+      "speed": "number",
+      "name": "string",
+      "hp": "number",
+      "scrap": "number",
+      "xp": "number",
+      "kind": "string",
+      "loot": "string",
+      "id": "string"
+    },
+    "wolf_rider": {
+      "art_size": "number",
+      "attack_radius": "number",
+      "cooldown_length": "number",
+      "damage": "number",
+      "max_windup": "number",
+      "speed": "number",
+      "name": "string",
+      "hp": "number",
+      "scrap": "number",
+      "xp": "number",
+      "kind": "string",
+      "loot": "string",
+      "id": "string"
+    },
+    "minion_spiderling": {
+      "damage": "number",
+      "speed": "number",
+      "name": "string",
+      "hp": "number",
+      "kind": "string",
+      "scrap": "number",
+      "xp": "number",
+      "loot": "string",
+      "id": "string"
+    },
+    "minion_wolf": {
+      "damage": "number",
+      "speed": "number",
+      "name": "string",
+      "hp": "number",
+      "kind": "string",
+      "scrap": "number",
+      "xp": "number",
+      "loot": "string",
+      "id": "string"
+    },
+    "vault_hunger": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "thornwood_scout": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "role": "string",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "poacher_archer": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "role": "string",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "overlook_sentinel": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "role": "string",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "captains_guard": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "role": "string",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "forest_scout_wanderer": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "thornwood_poacher_wanderer": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "bog_marauder_wanderer": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "mire_stalker_wanderer": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "deep_cave_sentinel_wanderer": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "frostroot_delver_wanderer": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "dungeon_guard_1": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "dungeon_guard_2": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "dungeon_guard_3": {
+      "name": "string",
+      "hp": "number",
+      "speed": "number",
+      "damage": "number",
+      "scrap": "number",
+      "xp": "number",
+      "loot": "string",
+      "kind": "string",
+      "id": "string"
+    }
+  },
+  "travelers": {
+    "Wandering merchant": {
+      "name": "string",
+      "id": "string"
+    },
+    "Injured traveler": {
+      "name": "string",
+      "id": "string"
+    },
+    "Treasure hunter": {
+      "name": "string",
+      "id": "string"
+    }
+  },
+  "equipment_slots": {
+    "necklace": {
+      "name": "string",
+      "id": "string"
+    },
+    "helmet": {
+      "name": "string",
+      "id": "string"
+    },
+    "weapon": {
+      "name": "string",
+      "id": "string"
+    },
+    "shield": {
+      "name": "string",
+      "id": "string"
+    },
+    "armor": {
+      "name": "string",
+      "id": "string"
+    },
+    "legs": {
+      "name": "string",
+      "id": "string"
+    },
+    "boots": {
+      "name": "string",
+      "id": "string"
+    },
+    "ring": {
+      "name": "string",
+      "id": "string"
+    }
+  },
+  "interactables": {
+    "root_herbs": {
+      "id": "string",
+      "kind": "string",
+      "name": "string",
+      "pos": "object"
+    },
+    "shrine_blessing": {
+      "id": "string",
+      "kind": "string",
+      "name": "string",
+      "pos": "object"
+    },
+    "camp_cache": {
+      "id": "string",
+      "kind": "string",
+      "name": "string",
+      "pos": "object"
+    },
+    "ford_cache": {
+      "id": "string",
+      "kind": "string",
+      "name": "string",
+      "pos": "object"
+    },
+    "overlook_totem": {
+      "id": "string",
+      "kind": "string",
+      "name": "string",
+      "pos": "object"
+    }
+  },
+  "labels": {
+    "den_chest": {
+      "name": "string",
+      "id": "string"
+    },
+    "forest_trail": {
+      "name": "string",
+      "id": "string"
+    },
+    "trading_settlement": {
+      "name": "string",
+      "id": "string"
+    },
+    "home_trail": {
+      "name": "string",
+      "id": "string"
+    },
+    "bog_trail_tier_2": {
+      "name": "string",
+      "id": "string"
+    },
+    "gather_wood": {
+      "name": "string",
+      "id": "string"
+    },
+    "riverbank": {
+      "name": "string",
+      "id": "string"
+    },
+    "personal_depot": {
+      "name": "string",
+      "id": "string"
+    },
+    "merchant_smith": {
+      "name": "string",
+      "id": "string"
+    },
+    "spell_trainer": {
+      "name": "string",
+      "id": "string"
+    },
+    "quest_board": {
+      "name": "string",
+      "id": "string"
+    },
+    "deep_cave_tier_3": {
+      "name": "string",
+      "id": "string"
+    },
+    "mine_bog_iron": {
+      "name": "string",
+      "id": "string"
+    },
+    "bog_trail": {
+      "name": "string",
+      "id": "string"
+    },
+    "mine_cave_ore": {
+      "name": "string",
+      "id": "string"
+    },
+    "open_den_chest": {
+      "name": "string",
+      "id": "string"
+    },
+    "follow_the_forest_trail": {
+      "name": "string",
+      "id": "string"
+    },
+    "enter_bramble_market": {
+      "name": "string",
+      "id": "string"
+    },
+    "return_to_the_den": {
+      "name": "string",
+      "id": "string"
+    },
+    "enter_mirewood_bog": {
+      "name": "string",
+      "id": "string"
+    },
+    "enter_frostroot_cave": {
+      "name": "string",
+      "id": "string"
+    },
+    "return_to_the_forest": {
+      "name": "string",
+      "id": "string"
+    },
+    "return_to_mirewood_bog": {
+      "name": "string",
+      "id": "string"
+    },
+    "fish_at_riverbank": {
+      "name": "string",
+      "id": "string"
+    },
+    "stairs_up": {
+      "name": "string",
+      "id": "string"
+    },
+    "stairs_down": {
+      "name": "string",
+      "id": "string"
+    },
+    "ward_seal": {
+      "name": "string",
+      "id": "string"
+    },
+    "side_vault": {
+      "name": "string",
+      "id": "string"
+    },
+    "final_reliquary": {
+      "name": "string",
+      "id": "string"
+    },
+    "scrap": {
+      "name": "string",
+      "id": "string"
+    },
+    "potion": {
+      "name": "string",
+      "id": "string"
+    },
+    "backpack": {
+      "name": "string",
+      "id": "string"
+    },
+    "chest": {
+      "name": "string",
+      "id": "string"
+    },
+    "scroll": {
+      "name": "string",
+      "id": "string"
+    }
+  },
+  "items": {
+    "axe": {
+      "attack": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "boots": {
+      "defense": "number",
+      "name": "string",
+      "slot": "string",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "bow": {
+      "attack": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "two_handed": "bool",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "captain_sword": {
+      "armor_bonus": "number",
+      "cooldown_mult": "number",
+      "crit_bonus": "number",
+      "damage": "number",
+      "id": "string",
+      "lore": "string",
+      "max_hp": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "speed_mult": "number",
+      "tradeoff": "string",
+      "icon_id": "string",
+      "icon_path": "string"
+    },
+    "cloth_armor": {
+      "defense": "number",
+      "name": "string",
+      "slot": "string",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "club": {
+      "attack": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "fish": {
+      "heal": "number",
+      "name": "string",
+      "stack": "number",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "helmet": {
+      "defense": "number",
+      "name": "string",
+      "slot": "string",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "herb": {
+      "name": "string",
+      "stack": "number",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "hero_dawnbreaker": {
+      "armor_bonus": "number",
+      "cooldown_mult": "number",
+      "crit_bonus": "number",
+      "damage": "number",
+      "id": "string",
+      "lore": "string",
+      "max_hp": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "speed_mult": "number",
+      "tradeoff": "string",
+      "icon_id": "string",
+      "icon_path": "string"
+    },
+    "hunter_shortbow": {
+      "armor_bonus": "number",
+      "cooldown_mult": "number",
+      "crit_bonus": "number",
+      "damage": "number",
+      "id": "string",
+      "lore": "string",
+      "max_hp": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "speed_mult": "number",
+      "tradeoff": "string",
+      "icon_id": "string",
+      "icon_path": "string"
+    },
+    "iron_sword": {
+      "attack": "number",
+      "level": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "legs": {
+      "defense": "number",
+      "name": "string",
+      "slot": "string",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "mage_ember_staff": {
+      "armor_bonus": "number",
+      "cooldown_mult": "number",
+      "crit_bonus": "number",
+      "damage": "number",
+      "id": "string",
+      "lore": "string",
+      "max_hp": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "speed_mult": "number",
+      "tradeoff": "string",
+      "icon_id": "string",
+      "icon_path": "string"
+    },
+    "necklace": {
+      "health": "number",
+      "name": "string",
+      "rarity": "string",
+      "slot": "string",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "ore": {
+      "name": "string",
+      "stack": "number",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "paladin_greatsword": {
+      "armor_bonus": "number",
+      "cooldown_mult": "number",
+      "crit_bonus": "number",
+      "damage": "number",
+      "id": "string",
+      "lore": "string",
+      "max_hp": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "speed_mult": "number",
+      "tradeoff": "string",
+      "icon_id": "string",
+      "icon_path": "string"
+    },
+    "priest_rosary": {
+      "armor_bonus": "number",
+      "cooldown_mult": "number",
+      "crit_bonus": "number",
+      "damage": "number",
+      "id": "string",
+      "lore": "string",
+      "max_hp": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "speed_mult": "number",
+      "tradeoff": "string",
+      "icon_id": "string",
+      "icon_path": "string"
+    },
+    "ring": {
+      "attack": "number",
+      "name": "string",
+      "rarity": "string",
+      "slot": "string",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "rogue_stiletto": {
+      "armor_bonus": "number",
+      "cooldown_mult": "number",
+      "crit_bonus": "number",
+      "damage": "number",
+      "id": "string",
+      "lore": "string",
+      "max_hp": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "speed_mult": "number",
+      "tradeoff": "string",
+      "icon_id": "string",
+      "icon_path": "string"
+    },
+    "rust_sword": {
+      "attack": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "rusty_sword": {
+      "armor_bonus": "number",
+      "cooldown_mult": "number",
+      "crit_bonus": "number",
+      "damage": "number",
+      "id": "string",
+      "lore": "string",
+      "max_hp": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "speed_mult": "number",
+      "tradeoff": "string",
+      "icon_id": "string",
+      "icon_path": "string"
+    },
+    "shield": {
+      "defense": "number",
+      "name": "string",
+      "slot": "string",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "staff": {
+      "attack": "number",
+      "name": "string",
+      "skill": "string",
+      "slot": "string",
+      "two_handed": "bool",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    },
+    "wood": {
+      "name": "string",
+      "stack": "number",
+      "icon_id": "string",
+      "icon_path": "string",
+      "id": "string"
+    }
+  },
+  "stations": {
+    "station_0": {
+      "cell": "number",
+      "pos": "object",
+      "room": "number",
+      "name": "string",
+      "id": "string"
+    },
+    "station_1": {
+      "cell": "number",
+      "pos": "object",
+      "room": "number",
+      "name": "string",
+      "id": "string"
+    },
+    "station_2": {
+      "cell": "number",
+      "pos": "object",
+      "room": "number",
+      "name": "string",
+      "id": "string"
+    },
+    "station_3": {
+      "cell": "number",
+      "pos": "object",
+      "room": "number",
+      "name": "string",
+      "id": "string"
+    },
+    "station_4": {
+      "cell": "number",
+      "pos": "object",
+      "room": "number",
+      "name": "string",
+      "id": "string"
+    },
+    "station_5": {
+      "cell": "number",
+      "pos": "object",
+      "room": "number",
+      "name": "string",
+      "id": "string"
+    },
+    "station_6": {
+      "cell": "number",
+      "pos": "object",
+      "room": "number",
+      "name": "string",
+      "id": "string"
+    },
+    "station_7": {
+      "cell": "number",
+      "pos": "object",
+      "room": "number",
+      "name": "string",
+      "id": "string"
+    }
+  },
+  "spells": {
+    "special_archer": {
+      "name": "string",
+      "cooldown": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "special_blade": {
+      "name": "string",
+      "cooldown": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "special_knight": {
+      "name": "string",
+      "cooldown": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "special_mage": {
+      "name": "string",
+      "cooldown": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "special_assassin": {
+      "name": "string",
+      "cooldown": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "special_beastmaster": {
+      "name": "string",
+      "cooldown": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "special_berserker": {
+      "name": "string",
+      "cooldown": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "special_guardian": {
+      "name": "string",
+      "cooldown": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "special_hunter": {
+      "name": "string",
+      "cooldown": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "special_necromancer": {
+      "name": "string",
+      "cooldown": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "special_shaman": {
+      "name": "string",
+      "cooldown": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "special_warlock": {
+      "name": "string",
+      "cooldown": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "special_warlord": {
+      "name": "string",
+      "cooldown": "number",
+      "kind": "string",
+      "id": "string"
+    },
+    "fireball": {
+      "cooldown": "number",
+      "cost": "number",
+      "damage": "number",
+      "radius": "number",
+      "range": "number",
+      "name": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "heal": {
+      "cooldown": "number",
+      "cost": "number",
+      "heal": "number",
+      "name": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "piercing_shot": {
+      "cooldown": "number",
+      "cost": "number",
+      "damage": "number",
+      "radius": "number",
+      "range": "number",
+      "name": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "potion": {
+      "cooldown": "number",
+      "cost": "number",
+      "name": "string",
+      "kind": "string",
+      "id": "string"
+    },
+    "shield_bash": {
+      "cooldown": "number",
+      "cost": "number",
+      "damage": "number",
+      "radius": "number",
+      "range": "number",
+      "name": "string",
+      "kind": "string",
+      "id": "string"
+    }
+  },
+  "quests": {
+    "sealed_descent": {
+      "name": "string",
+      "reward_scrap": "number",
+      "reward_xp": "number",
+      "id": "string"
+    },
+    "bounty": {
+      "name": "string",
+      "kill_target": "number",
+      "reward_scrap": "number",
+      "reward_xp": "number",
+      "id": "string"
+    }
+  },
+  "classes": {
+    "archer": {
+      "armor": "number",
+      "attack_cooldown": "number",
+      "attack_range": "number",
+      "base_damage": "number",
+      "bleed_dps": "number",
+      "crit_chance": "number",
+      "evolutions": "array",
+      "id": "string",
+      "key": "number",
+      "max_hp": "number",
+      "name": "string",
+      "poison_dps": "number",
+      "ranged": "bool",
+      "role": "string",
+      "speed": "number",
+      "summary": "string",
+      "tint": "object",
+      "special_id": "string"
+    },
+    "blade": {
+      "armor": "number",
+      "attack_cooldown": "number",
+      "attack_range": "number",
+      "base_damage": "number",
+      "bleed_dps": "number",
+      "crit_chance": "number",
+      "evolutions": "array",
+      "id": "string",
+      "key": "number",
+      "max_hp": "number",
+      "name": "string",
+      "poison_dps": "number",
+      "ranged": "bool",
+      "role": "string",
+      "speed": "number",
+      "summary": "string",
+      "tint": "object",
+      "special_id": "string"
+    },
+    "knight": {
+      "armor": "number",
+      "attack_cooldown": "number",
+      "attack_range": "number",
+      "base_damage": "number",
+      "bleed_dps": "number",
+      "crit_chance": "number",
+      "evolutions": "array",
+      "id": "string",
+      "key": "number",
+      "max_hp": "number",
+      "name": "string",
+      "poison_dps": "number",
+      "ranged": "bool",
+      "role": "string",
+      "speed": "number",
+      "summary": "string",
+      "tint": "object",
+      "special_id": "string"
+    },
+    "mage": {
+      "armor": "number",
+      "attack_cooldown": "number",
+      "attack_range": "number",
+      "base_damage": "number",
+      "bleed_dps": "number",
+      "crit_chance": "number",
+      "evolutions": "array",
+      "id": "string",
+      "key": "number",
+      "max_hp": "number",
+      "name": "string",
+      "poison_dps": "number",
+      "ranged": "bool",
+      "role": "string",
+      "speed": "number",
+      "summary": "string",
+      "tint": "object",
+      "special_id": "string"
+    }
+  },
+  "rooms": {
+    "room_0": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_1": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_2": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_3": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_4": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_5": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_6": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_7": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_8": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_9": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_10": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_11": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_12": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_13": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_14": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    },
+    "room_15": {
+      "name": "string",
+      "index": "number",
+      "id": "string"
+    }
+  }
+}

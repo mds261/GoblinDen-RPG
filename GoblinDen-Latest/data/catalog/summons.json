@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "name": "CAVE FANG WOLF",
+      "role": "wolf",
+      "hp": 95,
+      "speed": 245,
+      "damage": 18,
+      "attack_range": 64.0,
+      "id": "cave_wolf"
+    },
+    {
+      "name": "RISEN SKELETON",
+      "role": "skeleton",
+      "hp": 65,
+      "speed": 205,
+      "damage": 15,
+      "attack_range": 64.0,
+      "id": "risen_skeleton"
+    }
+  ]
+}

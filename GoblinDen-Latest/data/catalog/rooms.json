@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "name": "THE GOBLIN DEN",
+      "index": 0,
+      "id": "room_0"
+    },
+    {
+      "name": "ASHEN PASSAGE",
+      "index": 1,
+      "id": "room_1"
+    },
+    {
+      "name": "THE BREACH",
+      "index": 2,
+      "id": "room_2"
+    },
+    {
+      "name": "ROOTVEIN GROTTO",
+      "index": 3,
+      "id": "room_3"
+    },
+    {
+      "name": "THE CAVE MOUTH",
+      "index": 4,
+      "id": "room_4"
+    },
+    {
+      "name": "THORNWOOD HOLLOW",
+      "index": 5,
+      "id": "room_5"
+    },
+    {
+      "name": "THORNWOOD EXPANSE",
+      "index": 6,
+      "id": "room_6"
+    },
+    {
+      "name": "THE TREASURE ROOM",
+      "index": 7,
+      "id": "room_7"
+    },
+    {
+      "name": "THE ARMORY",
+      "index": 8,
+      "id": "room_8"
+    },
+    {
+      "name": "THE STRATEGY ROOM",
+      "index": 9,
+      "id": "room_9"
+    },
+    {
+      "name": "BRAMBLE MARKET — SAFE SETTLEMENT",
+      "index": 10,
+      "id": "room_10"
+    },
+    {
+      "name": "MIREWOOD BOG — TIER 2",
+      "index": 11,
+      "id": "room_11"
+    },
+    {
+      "name": "FROSTROOT CAVERN — TIER 3",
+      "index": 12,
+      "id": "room_12"
+    },
+    {
+      "name": "SEALED DESCENT — FLOOR 1",
+      "index": 13,
+      "id": "room_13"
+    },
+    {
+      "name": "SEALED DESCENT — FLOOR 2",
+      "index": 14,
+      "id": "room_14"
+    },
+    {
+      "name": "SEALED DESCENT — FLOOR 3",
+      "index": 15,
+      "id": "room_15"
+    }
+  ]
+}

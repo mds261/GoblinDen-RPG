@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "attack": 6,
+      "name": "Woodsman's Axe",
+      "skill": "Axe Fighting",
+      "slot": "weapon",
+      "icon_id": "axe",
+      "icon_path": "",
+      "id": "axe"
+    },
+    {
+      "defense": 0.02,
+      "name": "Trail Boots",
+      "slot": "boots",
+      "icon_id": "boots",
+      "icon_path": "",
+      "id": "boots"
+    },
+    {
+      "attack": 8,
+      "name": "Thornwood Longbow",
+      "skill": "Distance Fighting",
+      "slot": "weapon",
+      "two_handed": true,
+      "icon_id": "bow",
+      "icon_path": "",
+      "id": "bow"
+    },
+    {
+      "armor_bonus": 0.05,
+      "cooldown_mult": 1.1,
+      "crit_bonus": 0.05,
+      "damage": 18,
+      "id": "captain_sword",
+      "lore": "\"The previous owner probably wants this back.\"",
+      "max_hp": 15,
+      "name": "Knight Captain's Sword",
+      "skill": "Sword Fighting",
+      "slot": "weapon",
+      "speed_mult": 0.96,
+      "tradeoff": "Strength +3 | Too Large: Attack speed -10%",
+      "icon_id": "captain_sword",
+      "icon_path": ""
+    },
+    {
+      "defense": 0.04,
+      "name": "Woven Armor",
+      "slot": "armor",
+      "icon_id": "cloth_armor",
+      "icon_path": "",
+      "id": "cloth_armor"
+    },
+    {
+      "attack": 6,
+      "name": "Stone Club",
+      "skill": "Club Fighting",
+      "slot": "weapon",
+      "icon_id": "club",
+      "icon_path": "",
+      "id": "club"
+    },
+    {
+      "heal": 15,
+      "name": "River Fish",
+      "stack": 99,
+      "icon_id": "fish",
+      "icon_path": "",
+      "id": "fish"
+    },
+    {
+      "defense": 0.04,
+      "name": "Bog Iron Helm",
+      "slot": "helmet",
+      "icon_id": "helmet",
+      "icon_path": "",
+      "id": "helmet"
+    },
+    {
+      "name": "Glowleaf",
+      "stack": 99,
+      "icon_id": "herb",
+      "icon_path": "",
+      "id": "herb"
+    },
+    {
+      "armor_bonus": 0.15,
+      "cooldown_mult": 0.9,
+      "crit_bonus": 0.2,
+      "damage": 35,
+      "id": "hero_dawnbreaker",
+      "lore": "\"Bards sang that this blade could never fall to monsters. The bards were wrong.\"",
+      "max_hp": 50,
+      "name": "Legendary Hero's Dawnbreaker",
+      "skill": "Sword Fighting",
+      "slot": "weapon",
+      "speed_mult": 1.05,
+      "tradeoff": "Mythic Trophy (+35 Dmg, +50 HP, +20% Crit, +15% Armor)",
+      "icon_id": "hero_dawnbreaker",
+      "icon_path": ""
+    },
+    {
+      "armor_bonus": 0.0,
+      "cooldown_mult": 0.94,
+      "crit_bonus": 0.08,
+      "damage": 8,
+      "id": "hunter_shortbow",
+      "lore": "\"Carved from border-forest yew. Smells of pine resin and human arrogance.\"",
+      "max_hp": 0,
+      "name": "Outrider's Recurve Bow",
+      "skill": "Sword Fighting",
+      "slot": "weapon",
+      "speed_mult": 1.06,
+      "tradeoff": "Lightweight (+6% move & attack speed)",
+      "icon_id": "hunter_shortbow",
+      "icon_path": ""
+    },
+    {
+      "attack": 9,
+      "level": 2,
+      "name": "Forged Iron Sword",
+      "skill": "Sword Fighting",
+      "slot": "weapon",
+      "icon_id": "iron_sword",
+      "icon_path": "",
+      "id": "iron_sword"
+    },
+    {
+      "defense": 0.03,
+      "name": "Hide Leggings",
+      "slot": "legs",
+      "icon_id": "legs",
+      "icon_path": "",
+      "id": "legs"
+    },
+    {
+      "armor_bonus": 0.0,
+      "cooldown_mult": 0.88,
+      "crit_bonus": 0.12,
+      "damage": 20,
+      "id": "mage_ember_staff",
+      "lore": "\"Bound with rubies from the Royal Academy. Crackles when pointed at humans.\"",
+      "max_hp": -10,
+      "name": "Court Mage's Ember Staff",
+      "skill": "Sword Fighting",
+      "slot": "weapon",
+      "speed_mult": 1.0,
+      "tradeoff": "Volatile Focus (-10 Max HP, +12% spell & skill haste)",
+      "icon_id": "mage_ember_staff",
+      "icon_path": ""
+    },
+    {
+      "health": 12,
+      "name": "Goblin Talisman",
+      "rarity": "Rare",
+      "slot": "necklace",
+      "icon_id": "necklace",
+      "icon_path": "",
+      "id": "necklace"
+    },
+    {
+      "name": "Bog Iron",
+      "stack": 99,
+      "icon_id": "ore",
+      "icon_path": "",
+      "id": "ore"
+    },
+    {
+      "armor_bonus": 0.12,
+      "cooldown_mult": 1.12,
+      "crit_bonus": 0.08,
+      "damage": 26,
+      "id": "paladin_greatsword",
+      "lore": "\"Inscribed with a royal oath to purge the caves. Irony is heavy.\"",
+      "max_hp": 35,
+      "name": "Royal Paladin's Sunblade",
+      "skill": "Sword Fighting",
+      "slot": "weapon",
+      "speed_mult": 0.92,
+      "tradeoff": "Massive Relic: +35 HP & +12% Armor | Attack speed -12%",
+      "icon_id": "paladin_greatsword",
+      "icon_path": ""
+    },
+    {
+      "armor_bonus": 0.05,
+      "cooldown_mult": 0.95,
+      "crit_bonus": 0.0,
+      "damage": 7,
+      "id": "priest_rosary",
+      "lore": "\"Still warm with stolen prayers. The gold chain makes a fine goblin belt.\"",
+      "max_hp": 25,
+      "name": "Sun-Cleric's Relic Censer",
+      "skill": "Sword Fighting",
+      "slot": "weapon",
+      "speed_mult": 1.0,
+      "tradeoff": "Blessed metal (+25 HP, +5% armor)",
+      "icon_id": "priest_rosary",
+      "icon_path": ""
+    },
+    {
+      "attack": 2,
+      "name": "Amber Ring",
+      "rarity": "Uncommon",
+      "slot": "ring",
+      "icon_id": "ring",
+      "icon_path": "",
+      "id": "ring"
+    },
+    {
+      "armor_bonus": 0.0,
+      "cooldown_mult": 0.84,
+      "crit_bonus": 0.15,
+      "damage": 12,
+      "id": "rogue_stiletto",
+      "lore": "\"Forged for guild assassins in the dark. Fits a goblin grip like a claw.\"",
+      "max_hp": 0,
+      "name": "Trapfinder's Twin Stiletto",
+      "skill": "Sword Fighting",
+      "slot": "weapon",
+      "speed_mult": 1.1,
+      "tradeoff": "Balanced for ambush (+16% attack speed, +15% crit)",
+      "icon_id": "rogue_stiletto",
+      "icon_path": ""
+    },
+    {
+      "attack": 3,
+      "name": "Rust Sword",
+      "skill": "Sword Fighting",
+      "slot": "weapon",
+      "icon_id": "rust_sword",
+      "icon_path": "",
+      "id": "rust_sword"
+    },
+    {
+      "armor_bonus": 0.0,
+      "cooldown_mult": 1.0,
+      "crit_bonus": 0.0,
+      "damage": 4,
+      "id": "rusty_sword",
+      "lore": "\"Standard militia issue. Chipped, blood-stained, and now goblin property.\"",
+      "max_hp": 0,
+      "name": "Rusty Human Sword",
+      "skill": "Sword Fighting",
+      "slot": "weapon",
+      "speed_mult": 1.0,
+      "tradeoff": "Practical scavenged iron",
+      "icon_id": "rusty_sword",
+      "icon_path": ""
+    },
+    {
+      "defense": 0.08,
+      "name": "Ironwood Shield",
+      "slot": "shield",
+      "icon_id": "shield",
+      "icon_path": "",
+      "id": "shield"
+    },
+    {
+      "attack": 8,
+      "name": "Glowcap Staff",
+      "skill": "Magic",
+      "slot": "weapon",
+      "two_handed": true,
+      "icon_id": "staff",
+      "icon_path": "",
+      "id": "staff"
+    },
+    {
+      "name": "Thornwood",
+      "stack": 99,
+      "icon_id": "wood",
+      "icon_path": "",
+      "id": "wood"
+    }
+  ]
+}
